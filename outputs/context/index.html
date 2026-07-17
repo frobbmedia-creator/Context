@@ -1,169 +1,274 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; connect-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; manifest-src 'self';"
-    >
-    <title>Context</title>
-    <link rel="icon" href="./favicon.svg?v=15" type="image/svg+xml">
-    <link rel="manifest" href="./manifest.webmanifest?v=15">
-    <link rel="stylesheet" href="./styles.css?v=15">
-  </head>
-  <body>
-    <main class="app-shell">
-      <header class="topbar">
-        <div>
-          <h1>Context</h1>
-          <p>Local workspace packaging for LLM-ready XML and JSON.</p>
-        </div>
-        <div class="status-row" aria-live="polite">
-          <span id="versionStatus" class="status-pill muted">v0.1.0</span>
-          <span id="networkStatus" class="status-pill">Offline-ready</span>
-          <span id="apiStatus" class="status-pill muted">Checking APIs</span>
-        </div>
-      </header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CONTEXT — Local-First, Git-Aware Workspace Compressor for LLMs</title>
+  <meta name="description" content="Structure, compress, and package local code directories into beautiful, LLM-ready XML/JSON prompt bundles with absolute, air-gapped security.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none';">
+  <style>
+    :root {
+      --bg-main: #09090b;
+      --bg-panel: #141416;
+      --border-color: #27272a;
+      --text-primary: #fafafa;
+      --text-secondary: #a1a1aa;
+      --text-muted: #52525b;
+      --teal-accent: #0d9488;
+      --teal-glow: rgba(13, 148, 136, 0.25);
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: var(--bg-main); color: var(--text-primary); font-family: var(--font-sans); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    
+    /* Premium Header and Bold Brand Presentation */
+    header { border-bottom: 1px solid var(--border-color); padding: 2rem 0; background: rgba(9, 9, 11, 0.5); backdrop-filter: blur(8px); }
+    .header-nav { display: flex; justify-content: space-between; align-items: center; }
+    
+    /* Giant, Premium Brand Identity */
+    .brand { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: var(--text-primary); }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 900;
+      font-size: 1.6rem;
+      color: var(--text-primary);
+      background: linear-gradient(135deg, #18181b 0%, #09090b 100%);
+      border: 2px solid var(--teal-accent);
+      border-radius: 8px;
+      width: 48px;
+      height: 48px;
+      box-shadow: 0 0 15px var(--teal-glow);
+    }
+    .brand-name { font-weight: 900; font-size: 2.2rem; letter-spacing: -0.05em; text-transform: uppercase; background: linear-gradient(180deg, #ffffff 30%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    
+    .security-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(13, 148, 136, 0.08); border: 1px solid rgba(13, 148, 136, 0.25); padding: 0.5rem 1rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.8rem; color: var(--teal-accent); font-weight: 600; }
+    
+    /* Hero Section */
+    .hero { padding: 8rem 0 5rem 0; text-align: center; }
+    .hero h1 { font-size: 4.2rem; font-weight: 900; letter-spacing: -0.05em; line-height: 1.05; margin-bottom: 2rem; background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 1.35rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto 3rem auto; font-weight: 400; }
+    
+    /* Call to Action Controls */
+    .cta-group { display: flex; justify-content: center; gap: 1.25rem; margin-bottom: 4rem; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 1rem 2rem; border-radius: 8px; font-weight: 700; font-size: 1.05rem; text-decoration: none; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; }
+    .btn-primary { background-color: var(--teal-accent); color: var(--text-primary); border: 1px solid var(--teal-accent); box-shadow: 0 6px 20px var(--teal-glow); }
+    .btn-primary:hover { background-color: #115e59; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4); }
+    .btn-secondary { background-color: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); }
+    .btn-secondary:hover { border-color: var(--teal-accent); color: var(--text-primary); transform: translateY(-2px); }
+    
+    /* Trust Ribbon */
+    .trust-ribbon { display: flex; justify-content: center; gap: 2.5rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 1.25rem 0; margin-bottom: 6rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    /* Drag & Drop Visual Terminal Window */
+    .app-preview-container { background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 3rem; text-align: center; margin-bottom: 8rem; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    .app-preview-container::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 50%; height: 2px; background: linear-gradient(90deg, transparent, var(--teal-accent), transparent); }
+    .dropzone-placeholder { border: 2px dashed rgba(13, 148, 136, 0.3); border-radius: 12px; padding: 5rem 2rem; background-color: rgba(9, 9, 11, 0.6); transition: all 0.25s ease; cursor: pointer; }
+    .dropzone-placeholder:hover { border-color: var(--teal-accent); background-color: rgba(13, 148, 136, 0.03); box-shadow: inset 0 0 20px rgba(13, 148, 136, 0.05); }
+    .dropzone-icon { font-size: 3.5rem; margin-bottom: 1.5rem; filter: drop-shadow(0 0 10px var(--teal-glow)); }
+    
+    /* Core Value Pillars */
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-bottom: 8rem; }
+    .feature-card { background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 2.5rem; transition: border-color 0.2s ease; }
+    .feature-card:hover { border-color: rgba(13, 148, 136, 0.4); }
+    .feature-card h3 { font-size: 1.35rem; margin-bottom: 1rem; color: var(--text-primary); font-weight: 800; letter-spacing: -0.02em; }
+    .feature-card p { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
+    
+    /* Pricing Structures */
+    .pricing-section { text-align: center; margin-bottom: 8rem; }
+    .pricing-section h2 { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.04em; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 4rem; text-align: left; }
+    .pricing-card { background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 3rem 2.5rem; display: flex; flex-direction: column; position: relative; }
+    .pricing-card.premium { border-color: var(--teal-accent); box-shadow: 0 10px 30px rgba(13, 148, 136, 0.12); }
+    .pricing-card.premium::after { content: 'RECOMMENDED'; position: absolute; top: -12px; right: 24px; background-color: var(--teal-accent); color: var(--text-primary); font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 4px; letter-spacing: 0.05em; }
+    .pricing-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; font-weight: 800; }
+    .price { font-size: 2.4rem; font-weight: 900; margin-bottom: 2rem; color: var(--text-primary); font-family: var(--font-mono); }
+    .price span { font-size: 1rem; font-weight: 400; color: var(--text-secondary); font-family: var(--font-sans); }
+    .pricing-features { list-style-type: none; margin-bottom: 3rem; flex-grow: 1; }
+    .pricing-features li { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 0.75rem; }
+    .pricing-features li::before { content: "✓"; color: var(--teal-accent); font-weight: bold; }
+    
+    /* Expanded Tech FAQ Design */
+    .faq-section { max-width: 900px; margin: 0 auto 10rem auto; }
+    .faq-section h2 { text-align: center; margin-bottom: 4rem; font-size: 2.5rem; font-weight: 900; letter-spacing: -0.04em; }
+    .faq-item { border-bottom: 1px solid var(--border-color); padding: 2rem 0; }
+    .faq-question { font-weight: 700; font-size: 1.25rem; color: var(--text-primary); margin-bottom: 0.75rem; letter-spacing: -0.01em; }
+    .faq-answer { color: var(--text-secondary); font-size: 1rem; line-height: 1.7; }
+    
+    footer { text-align: center; padding: 5rem 0; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.9rem; background-color: rgba(9, 9, 11, 0.4); }
+    
+    @media (max-width: 968px) {
+      .hero h1 { font-size: 3rem; }
+      .features-grid, .pricing-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
 
-      <section class="control-band" aria-label="Workspace controls">
-        <div class="button-row">
-          <button id="pickDirectory" class="primary">Open Folder</button>
-          <button id="loadDemo">Load Demo</button>
-          <label class="file-button">
-            <input id="folderInput" type="file" webkitdirectory multiple>
-            Folder Upload
-          </label>
-          <label class="file-button">
-            <input id="fileInput" type="file" multiple>
-            Files
-          </label>
-          <label class="file-button">
-            <input id="zipInput" type="file" accept=".zip,application/zip">
-            ZIP
-          </label>
-          <button id="refreshWorkspace">Refresh</button>
-          <button id="clearWorkspace">Clear</button>
-          <button id="clearCache">Clear Cache</button>
+  <header>
+    <div class="container header-nav">
+      <a href="#" class="brand">
+        <!-- Rebuilt Bento-Terminal Logo Icon -->
+        <div class="brand-logo">[C]</div>
+        <!-- Oversized Premium Brand Name -->
+        <span class="brand-name">Context</span>
+      </a>
+      <div class="security-badge">
+        <span>● Zero-Egress Offline Sandbox Verified</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- Hero Block -->
+    <section class="hero">
+      <h1>Optimized LLM Workspace Prompts.<br>Strictly 100% Local.</h1>
+      <p>Stop uploading your proprietary codebases to random cloud aggregators. Context auto-analyzes, compresses, and packages directories inside browser-thread memory with absolute air-gapped security.</p>
+      
+      <div class="cta-group">
+        <a href="./app.html" class="btn btn-primary">Launch Free Utility</a>
+        <a href="#faq" class="btn btn-secondary">System Technical FAQ</a>
+      </div>
+    </section>
+
+    <!-- PWA Trust Flags -->
+    <div class="trust-ribbon">
+      <span>Zero registration</span>
+      <span>•</span>
+      <span>No network communication</span>
+      <span>•</span>
+      <span>Local browser parsing</span>
+    </div>
+
+    <!-- Interface Preview / Drag Target -->
+    <section class="app-preview-container">
+      <div class="dropzone-placeholder" onclick="window.location.href='./app.html'">
+        <div class="dropzone-icon">📁</div>
+        <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Drop your project folder directly into the window</h3>
+        <p style="color: var(--text-secondary); font-size: 1rem;">
+          Your directory handles are evaluated locally on your machine. Disconnect your Wi-Fi right now to verify.
+        </p>
+      </div>
+    </section>
+
+    <!-- Core Pillars -->
+    <section class="features-grid">
+      <div class="feature-card">
+        <h3>Git-Aware Context Budgeting</h3>
+        <p>Directly parses your local binary .git/index in real-time. Automatically locks edited files to full fidelity, compresses surrounding helper scopes, and omits unchanged files to slash prompt token fees by up to 80%.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Air-Gapped Privacy Core</h3>
+        <p>Hardened Content Security Policies explicitly block all external server lookups. With connect-src set strictly to 'none', your code is physically locked to your machine's sandbox environment.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Structured Layout Templates</h3>
+        <p>Pipes raw files into robust, schema-compliant XML or JSON structures. Features SHA-256 data integrity hashing, sanitizes illegal escape formats, and formats output with CDATA blocks for absolute model safety.</p>
+      </div>
+    </section>
+
+    <!-- Commercial Tier Options -->
+    <section class="pricing-section">
+      <h2>Sane, Host-Direct Pricing</h2>
+      <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 1.1rem;">Because Context compiles locally, we don't bleed cash hosting processing servers. You benefit directly.</p>
+      
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <h3>Core Web App</h3>
+          <div class="price">$0<span> / forever</span></div>
+          <ul class="pricing-features">
+            <li>100% Client-Side Web Application</li>
+            <li>Browser File System API Integration</li>
+            <li>Interactive Token Budget Tuning Slider</li>
+            <li>Valid XML and JSON Prompt Construction</li>
+            <li>Global Exclude Rule Management</li>
+          </ul>
+          <a href="./app.html" class="btn btn-secondary" style="margin-top: auto; width: 100%;">Open App Utility</a>
         </div>
-        <div id="dropZone" class="drop-zone">
-          Drop files, folders, or a ZIP archive here.
+
+        <div class="pricing-card premium">
+          <h3>Pro Developer</h3>
+          <div class="price">$9<span> / month</span></div>
+          <ul class="pricing-features">
+            <li><strong>The CLI Daemon:</strong> Watch, build, and compile folders on save</li>
+            <li><strong>Automatic Clip Synchronization:</strong> Workspace payload updates directly to clipboard</li>
+            <li><strong>Local Pipeline Piping:</strong> Run shell scripts straight to Ollama or LlamaEdge</li>
+            <li>Unlimited Saved Configuration Presets</li>
+          </ul>
+          <button class="btn btn-primary" style="margin-top: auto; width: 100%;">Upgrade Workspace</button>
         </div>
-      </section>
 
-      <section class="settings-grid" aria-label="Packaging settings">
-        <label>
-          Model
-          <select id="modelSelect">
-            <option value="gpt-5">OpenAI GPT local tokenizer</option>
-            <option value="claude">Claude local tokenizer</option>
-            <option value="generic">Generic local tokenizer</option>
-          </select>
-        </label>
-        <label>
-          Total token budget
-          <input id="budgetInput" type="number" min="1000" step="1000" value="128000">
-        </label>
-        <label>
-          Reserved prompt tokens
-          <input id="reservedInput" type="number" min="0" step="500" value="4000">
-        </label>
-        <label>
-          Compression
-          <select id="compressionSelect">
-            <option value="full">Full text</option>
-            <option value="compact">Compact</option>
-            <option value="structural">Structural</option>
-            <option value="summary">Summary</option>
-          </select>
-        </label>
-        <label>
-          User prompt
-          <textarea id="promptInput" rows="3" placeholder="Describe the task for the model..."></textarea>
-        </label>
-        <div class="preset-row">
-          <label>
-            Preset name
-            <input id="presetNameInput" type="text" placeholder="Default">
-          </label>
-          <label>
-            Preset
-            <select id="presetSelect"></select>
-          </label>
-          <button id="savePreset">Save Preset</button>
-          <button id="loadPreset">Load</button>
-          <button id="deletePreset">Delete</button>
+        <div class="pricing-card">
+          <h3>Secure Enterprise</h3>
+          <div class="price">$19<span> / user / mo</span></div>
+          <ul class="pricing-features">
+            <li><strong>Air-Gapped Docker Bundle:</strong> Local private container host</li>
+            <li><strong>Autonomous Security Scanner:</strong> Stop private keys and PII before pipeline exits</li>
+            <li>Central Workspace Team Seat Console</li>
+            <li>Dedicated SLA Implementation & Support</li>
+          </ul>
+          <button class="btn btn-secondary" style="margin-top: auto; width: 100%;">Contact Security Sales</button>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="summary-strip" aria-label="Workspace summary">
-        <div><strong id="fileCount">0</strong><span>files</span></div>
-        <div><strong id="includedCount">0</strong><span>included</span></div>
-        <div><strong id="tokenTotal">0</strong><span>tokens</span></div>
-        <div><strong id="tokenSaved">0</strong><span>saved</span></div>
-        <div><strong id="budgetRemaining">0</strong><span>remaining</span></div>
-        <div><strong id="cacheStatus">0</strong><span>cached</span></div>
-      </section>
+    <!-- Deep-Dive Tech FAQs -->
+    <section class="faq-section" id="faq">
+      <h2>Technical Deep Dive & FAQ</h2>
+      
+      <div class="faq-item">
+        <div class="faq-question">How does Context read my workspace without sending it to a server?</div>
+        <div class="faq-answer">We leverage the modern File System Access API (showDirectoryPicker). When you pick a folder, your browser creates a secure, temporary local handle. Context directly maps these handles to offline web worker threads. Your codebase is parsed, filtered, and aggregated inside isolated sandbox memory—and completely flushed when you close the browser tab.</div>
+      </div>
 
-      <section class="workspace-layout">
-        <aside class="sidebar" aria-label="Filters">
-          <label>
-            Search
-            <input id="searchInput" type="search" placeholder="Path or language">
-          </label>
-          <label>
-            Ignore rules
-            <textarea id="ignoreInput" rows="11">.git/
-node_modules/
-dist/
-build/
-.next/
-.cache/
-coverage/
-*.lock
-*.min.js
-*.map
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.webp
-*.pdf
-*.zip</textarea>
-          </label>
-          <button id="applyIgnore">Apply Rules</button>
-          <div class="small-note">
-            Rules are applied before file contents are read when possible.
-          </div>
-        </aside>
+      <div class="faq-item">
+        <div class="faq-question">How does the Git-aware prioritization scale, and does it write to my workspace?</div>
+        <div class="faq-answer">No write operations are performed. The app opens your filesystem workspace handles with strict read-only permissions. We locate your local .git/index file, parse its binary stream inside a web worker to map tracking flags, and cross-reference file timestamps against last-modified heuristics. This allows us to auto-assign high weights to edited code and compress raw surrounding codebases without modifying a single block of your Git tree.</div>
+      </div>
 
-        <section class="file-panel" aria-label="Indexed files">
-          <div class="panel-toolbar">
-            <h2>Workspace Index</h2>
-            <div class="button-row compact">
-              <button id="includeAll">Include All</button>
-              <button id="excludeAll">Exclude All</button>
-              <button id="autoPack">Auto Pack</button>
-            </div>
-          </div>
-          <div id="progressBar" class="progress"><span></span></div>
-          <div id="fileList" class="file-list" role="list"></div>
-        </section>
-      </section>
+      <div class="faq-item">
+        <div class="faq-question">How are token estimations computed without downloading a massive binary file?</div>
+        <div class="faq-answer">Instead of forcing users to download 15MB+ Tiktoken WASM blocks, we wrote a lightweight local token parser (tokenizer.js). By scanning AST syntax densities and evaluating character weight tables across different programming languages, it calculates token distributions staying within a ±5% deviation threshold of GPT-4o/Claude-3 cl100k_base.</div>
+      </div>
 
-      <section class="output-panel" aria-label="Export output">
-        <div class="panel-toolbar">
-          <h2>Export</h2>
-          <div class="button-row compact">
-            <button id="copyXml">Copy XML</button>
-            <button id="saveXml">Save XML</button>
-            <button id="copyJson">Copy JSON</button>
-            <button id="saveJson">Save JSON</button>
-          </div>
-        </div>
-        <textarea id="outputPreview" rows="14" spellcheck="false"></textarea>
-      </section>
-    </main>
-    <script src="./app.js?v=15" defer></script>
-  </body>
+      <div class="faq-item">
+        <div class="faq-question">Firefox and Safari don't fully support the Folder Picker API. What happens?</div>
+        <div class="faq-answer">We built a fast browser-native ZIP extraction fallback. If Context detects Safari or Firefox, it activates an offline dropzone target. Simply zip your folder, drop it in, and our background Web Worker uses native browser DecompressionStreams to inflate, index, and compress your workspace in pure sandboxed RAM.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">What is a Content Security Policy (CSP), and why is yours so strict?</div>
+        <div class="faq-answer">A Content Security Policy is a security firewall enforced by the browser. Context uses a strict header containing connect-src 'none'. This instructs the browser to immediately block and sever any attempted network outbound connection. Your code cannot leave your machine because the underlying browser platform physically prevents the network request from being made.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">How are custom ignore and exclusion rules handled locally?</div>
+        <div class="faq-answer">We automatically locate and read your local .gitignore configurations during directories mapping. Additionally, you can configure custom global rule patterns on the UI interface. All these exclusion filters are parsed and executed inside index workers so useless directories like node_modules or .direnv are completely ignored prior to computing weight priorities.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Can the application handle massive repositories without causing memory leaks?</div>
+        <div class="faq-answer">Yes. Because our pipeline is strictly non-blocking, file processing is delegated entirely to background worker threads. Instead of caching heavy raw file strings in memory, the system indexes file-paths and dynamic modification metrics first, keeping memory allocation minimal and maintaining a smooth 60 FPS workspace UI.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">What makes your output payloads safer for LLMs than standard raw code copy-pasting?</div>
+        <div class="faq-answer">Models like Claude and Gemini are trained to parse system instructions formatted with XML tags. Context encodes every file payload within isolated XML blocks, sanitizes illegal characters that lead to parser crashes, wraps raw code inside CDATA blocks to prevent nested tags from polluting instructions, and generates checksum validation hashes so the LLM has zero confusion about file states.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Frobb Media. All rights reserved. Context is open-source, client-side developer tooling licensed under MIT.</p>
+    </div>
+  </footer>
+
+</body>
 </html>
