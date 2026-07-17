@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CONTEXT — Local-First, Git-Aware Workspace Compressor for LLMs</title>
   <meta name="description" content="Structure, compress, and package local code directories into beautiful, LLM-ready XML/JSON prompt bundles with absolute, air-gapped security.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none';">
+  <script defer src="/_vercel/insights/script.js"></script>
   <style>
     :root {
       --bg-main: #09090b;
@@ -118,7 +119,7 @@
         <span class="brand-name">Context</span>
       </a>
       <div class="security-badge">
-        <span>● Zero-Egress Offline Sandbox Verified</span>
+        <span>● Local Processing + Vercel Analytics</span>
       </div>
     </div>
   </header>
@@ -128,7 +129,7 @@
     <!-- Hero Block -->
     <section class="hero">
       <h1>Optimized LLM Workspace Prompts.<br>Strictly 100% Local.</h1>
-      <p>Stop uploading your proprietary codebases to random cloud aggregators. Context auto-analyzes, compresses, and packages directories inside browser-thread memory with absolute air-gapped security.</p>
+      <p>Stop uploading your proprietary codebases to random cloud aggregators. Context auto-analyzes, compresses, and packages directories locally in your browser, with only first-party Vercel page analytics enabled.</p>
       
       <div class="cta-group">
         <a href="/app" class="btn btn-primary">Launch Free Utility</a>
@@ -140,7 +141,7 @@
     <div class="trust-ribbon">
       <span>Zero registration</span>
       <span>•</span>
-      <span>No network communication</span>
+      <span>No file uploads</span>
       <span>•</span>
       <span>Local browser parsing</span>
     </div>
@@ -164,7 +165,7 @@
       </div>
       <div class="feature-card">
         <h3>Air-Gapped Privacy Core</h3>
-        <p>Hardened Content Security Policies explicitly block all external server lookups. With connect-src set strictly to 'none', your code is physically locked to your machine's sandbox environment.</p>
+        <p>Hardened Content Security Policies keep file processing local while allowing same-origin Vercel Analytics requests for site traffic measurement. Your workspace files are never uploaded by the app.</p>
       </div>
       <div class="feature-card">
         <h3>Structured Layout Templates</h3>
@@ -243,7 +244,7 @@
 
       <div class="faq-item">
         <div class="faq-question">What is a Content Security Policy (CSP), and why is yours so strict?</div>
-        <div class="faq-answer">A Content Security Policy is a security firewall enforced by the browser. Context uses a strict header containing connect-src 'none'. This instructs the browser to immediately block and sever any attempted network outbound connection. Your code cannot leave your machine because the underlying browser platform physically prevents the network request from being made.</div>
+        <div class="faq-answer">A Content Security Policy is a security firewall enforced by the browser. Context keeps scripts and workers self-hosted, allows same-origin Vercel Analytics requests, and does not upload workspace file contents. File parsing and packaging stay in the local browser runtime.</div>
       </div>
 
       <div class="faq-item">

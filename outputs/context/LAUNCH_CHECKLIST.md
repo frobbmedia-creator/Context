@@ -4,7 +4,7 @@
 
 - Static app runs from localhost or any static HTTPS host.
 - No external runtime dependencies.
-- CSP blocks network egress with `connect-src 'none'`.
+- CSP limits network egress to same-origin Vercel Analytics with `connect-src 'self'`.
 - Demo workflow works.
 - Folder/file/ZIP ingestion paths exist.
 - Worker processing, token estimation, compression, hashing, omitted-file reporting, presets, and cache controls are implemented.

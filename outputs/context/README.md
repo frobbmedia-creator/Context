@@ -1,6 +1,6 @@
 # Context
 
-Context is a local-first browser utility for packaging workspace files into LLM-ready XML or JSON. It is designed to run without uploads, CDNs, analytics, or network egress.
+Context is a local-first browser utility for packaging workspace files into LLM-ready XML or JSON. It is designed to run without workspace uploads or CDN dependencies, with first-party Vercel Web Analytics enabled for page traffic.
 
 ## Run
 
@@ -29,7 +29,7 @@ Do not open `index.html` directly with `file://`; workers and browser storage AP
 - Omitted-file audit reports.
 - Local settings and preset persistence.
 - IndexedDB cache plus OPFS snapshot optimization.
-- Strict CSP with `connect-src 'none'`.
+- Strict CSP with `connect-src 'self'` for same-origin Vercel Analytics.
 - Clear cache control.
 
 ## Test

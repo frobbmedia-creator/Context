@@ -18,7 +18,7 @@ Context stores data locally in the browser:
 
 ## Network
 
-The distributed app has no analytics, telemetry, CDN dependencies, account system, or server upload path. The HTML Content Security Policy sets `connect-src 'none'`.
+The distributed app has Vercel Web Analytics for page traffic, but no CDN dependencies, account system, or workspace upload path. The HTML Content Security Policy sets `connect-src 'self'` so analytics requests stay same-origin on Vercel.
 
 ## User Control
 

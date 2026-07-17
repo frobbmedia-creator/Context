@@ -20,4 +20,4 @@ The app performs deterministic local processing. Token counts are local estimate
 
 ## Privacy
 
-The app is designed to operate without uploads, telemetry, analytics, or account services.
+The app is designed to operate without workspace uploads or account services. First-party Vercel Web Analytics may collect page traffic metadata.

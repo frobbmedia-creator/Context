@@ -345,7 +345,7 @@ export function autoPack(records: FileRecord[], budget: number): FileRecord[] {
       ignored: false,
       text: `export const contentSecurityPolicy = [
   "default-src 'self'",
-  "connect-src 'none'",
+  "connect-src 'self'",
   "script-src 'self'",
   "style-src 'self'",
   "img-src 'self' data:",
