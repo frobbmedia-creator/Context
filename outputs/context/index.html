@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; manifest-src 'self';"
+    >
+    <title>Context</title>
+    <link rel="icon" href="./favicon.svg?v=14" type="image/svg+xml">
+    <link rel="manifest" href="./manifest.webmanifest?v=14">
+    <link rel="stylesheet" href="./styles.css?v=14">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <h1>Context</h1>
+          <p>Local workspace packaging for LLM-ready XML and JSON.</p>
+        </div>
+        <div class="status-row" aria-live="polite">
+          <span id="versionStatus" class="status-pill muted">v0.1.0</span>
+          <span id="networkStatus" class="status-pill">Offline-ready</span>
+          <span id="apiStatus" class="status-pill muted">Checking APIs</span>
+        </div>
+      </header>
+
+      <section class="control-band" aria-label="Workspace controls">
+        <div class="button-row">
+          <button id="pickDirectory" class="primary">Open Folder</button>
+          <button id="loadDemo">Load Demo</button>
+          <label class="file-button">
+            <input id="folderInput" type="file" webkitdirectory multiple>
+            Folder Upload
+          </label>
+          <label class="file-button">
+            <input id="fileInput" type="file" multiple>
+            Files
+          </label>
+          <label class="file-button">
+            <input id="zipInput" type="file" accept=".zip,application/zip">
+            ZIP
+          </label>
+          <button id="refreshWorkspace">Refresh</button>
+          <button id="clearWorkspace">Clear</button>
+          <button id="clearCache">Clear Cache</button>
+        </div>
+        <div id="dropZone" class="drop-zone">
+          Drop files, folders, or a ZIP archive here.
+        </div>
+      </section>
+
+      <section class="settings-grid" aria-label="Packaging settings">
+        <label>
+          Model
+          <select id="modelSelect">
+            <option value="gpt-5">OpenAI GPT local tokenizer</option>
+            <option value="claude">Claude local tokenizer</option>
+            <option value="generic">Generic local tokenizer</option>
+          </select>
+        </label>
+        <label>
+          Total token budget
+          <input id="budgetInput" type="number" min="1000" step="1000" value="128000">
+        </label>
+        <label>
+          Reserved prompt tokens
+          <input id="reservedInput" type="number" min="0" step="500" value="4000">
+        </label>
+        <label>
+          Compression
+          <select id="compressionSelect">
+            <option value="full">Full text</option>
+            <option value="compact">Compact</option>
+            <option value="structural">Structural</option>
+            <option value="summary">Summary</option>
+          </select>
+        </label>
+        <label>
+          User prompt
+          <textarea id="promptInput" rows="3" placeholder="Describe the task for the model..."></textarea>
+        </label>
+        <div class="preset-row">
+          <label>
+            Preset name
+            <input id="presetNameInput" type="text" placeholder="Default">
+          </label>
+          <label>
+            Preset
+            <select id="presetSelect"></select>
+          </label>
+          <button id="savePreset">Save Preset</button>
+          <button id="loadPreset">Load</button>
+          <button id="deletePreset">Delete</button>
+        </div>
+      </section>
+
+      <section class="summary-strip" aria-label="Workspace summary">
+        <div><strong id="fileCount">0</strong><span>files</span></div>
+        <div><strong id="includedCount">0</strong><span>included</span></div>
+        <div><strong id="tokenTotal">0</strong><span>tokens</span></div>
+        <div><strong id="tokenSaved">0</strong><span>saved</span></div>
+        <div><strong id="budgetRemaining">0</strong><span>remaining</span></div>
+        <div><strong id="cacheStatus">0</strong><span>cached</span></div>
+      </section>
+
+      <section class="workspace-layout">
+        <aside class="sidebar" aria-label="Filters">
+          <label>
+            Search
+            <input id="searchInput" type="search" placeholder="Path or language">
+          </label>
+          <label>
+            Ignore rules
+            <textarea id="ignoreInput" rows="11">.git/
+node_modules/
+dist/
+build/
+.next/
+.cache/
+coverage/
+*.lock
+*.min.js
+*.map
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.pdf
+*.zip</textarea>
+          </label>
+          <button id="applyIgnore">Apply Rules</button>
+          <div class="small-note">
+            Rules are applied before file contents are read when possible.
+          </div>
+        </aside>
+
+        <section class="file-panel" aria-label="Indexed files">
+          <div class="panel-toolbar">
+            <h2>Workspace Index</h2>
+            <div class="button-row compact">
+              <button id="includeAll">Include All</button>
+              <button id="excludeAll">Exclude All</button>
+              <button id="autoPack">Auto Pack</button>
+            </div>
+          </div>
+          <div id="progressBar" class="progress"><span></span></div>
+          <div id="fileList" class="file-list" role="list"></div>
+        </section>
+      </section>
+
+      <section class="output-panel" aria-label="Export output">
+        <div class="panel-toolbar">
+          <h2>Export</h2>
+          <div class="button-row compact">
+            <button id="copyXml">Copy XML</button>
+            <button id="saveXml">Save XML</button>
+            <button id="copyJson">Copy JSON</button>
+            <button id="saveJson">Save JSON</button>
+          </div>
+        </div>
+        <textarea id="outputPreview" rows="14" spellcheck="false"></textarea>
+      </section>
+    </main>
+    <script src="./app.js?v=14" defer></script>
+  </body>
+</html>
