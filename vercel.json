@@ -1,6 +1,4 @@
 {
   "cleanUrls": true,
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/outputs/context/$1" }
-  ]
+  "outputDirectory": "dist"
 }
