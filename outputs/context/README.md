@@ -13,7 +13,7 @@ python3 -m http.server 4173
 Open:
 
 ```text
-http://127.0.0.1:4173/index.html?v=14
+http://127.0.0.1:4173/index.html?v=15
 ```
 
 Do not open `index.html` directly with `file://`; workers and browser storage APIs need localhost.

@@ -3,8 +3,8 @@ const CACHE_STORE = "file-metadata";
 const MAX_TEXT_BYTES = 1_500_000;
 const HASH_VERSION = "sha256-text-v1";
 
-importScripts("./tokenizer.js?v=14");
-importScripts("./compressor.js?v=14");
+importScripts("./tokenizer.js?v=15");
+importScripts("./compressor.js?v=15");
 
 let dbPromise;
 

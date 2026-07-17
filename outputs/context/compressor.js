@@ -91,9 +91,10 @@
       if (/^from\s+\S+\s+import\b|^import\s+\S+/.test(trimmed)) output.push(trimmed);
       else if (/^@\w/.test(trimmed)) decorators.push(trimmed);
       else if (/^(async\s+)?def\s+\w+\(|^class\s+\w+/.test(trimmed)) {
-        output.push(...decorators);
+        const indent = line.match(/^\s*/)[0];
+        output.push(...decorators.map((decorator) => `${indent}${decorator}`));
         decorators = [];
-        output.push(`${trimmed} ...`);
+        output.push(`${indent}${trimmed} ...`);
       }
     }
 

@@ -4,7 +4,7 @@
   "description": "Local-first workspace packaging for LLM-ready XML and JSON.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f7f8f5",
+  "background_color": "#09090b",
   "theme_color": "#0f766e",
   "icons": [
     {

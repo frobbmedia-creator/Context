@@ -63,4 +63,21 @@ assert.ok(fullTokens > 0);
 assert.ok(structuralTokens > 0);
 assert.ok(structuralTokens < fullTokens);
 
+const python = `
+class Service:
+    @cached_property
+    def config(self):
+        return load_config()
+
+    async def start(self):
+        await boot()
+`;
+
+const structuralPython = ContextCompressor.transformText(python, "structural", "Python");
+
+assert.ok(structuralPython.includes("class Service: ..."));
+assert.ok(structuralPython.includes("    @cached_property"));
+assert.ok(structuralPython.includes("    def config(self): ..."));
+assert.ok(structuralPython.includes("    async def start(self): ..."));
+
 console.log("unit-tests: ok");

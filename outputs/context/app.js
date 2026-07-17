@@ -65,7 +65,7 @@ function showFileProtocolWarning() {
 
 function initWorker() {
   try {
-    state.worker = new Worker("./worker.js?v=14");
+    state.worker = new Worker("./worker.js?v=15");
   } catch (error) {
     showStatus(`Worker failed to start: ${error.message}`, true);
     return;
@@ -760,7 +760,7 @@ function buildXml() {
   const omitted = omittedRecords();
   const prompt = els.promptInput.value.trim() || "[Prompt]";
   const body = included.map((record) => {
-    const content = safeCdata(record.content || "");
+    const content = safeCdata(sanitizeXmlString(record.content || ""));
     const warnings = record.warnings?.length ? ` warnings="${escapeAttr(record.warnings.join(","))}"` : "";
     const hash = record.contentHash ? ` sha256="${escapeAttr(record.contentHash)}" hash_scope="${escapeAttr(record.hashScope)}"` : "";
     return `  <file path="${escapeAttr(record.path)}" language="${escapeAttr(record.language)}" tokens="${record.tokens}" tokenizer="${escapeAttr(record.tokenizer || "Context local tokenizer")}" compressor="${escapeAttr(record.compressor || "Context compressor")}" compression="${escapeAttr(record.compression)}"${hash}${warnings}>\n<![CDATA[\n${content}\n]]>\n  </file>`;
@@ -847,6 +847,11 @@ function omitReason(record) {
 
 function safeCdata(text) {
   return text.replaceAll("]]>", "]]]]><![CDATA[>");
+}
+
+function sanitizeXmlString(text) {
+  if (!text) return "";
+  return text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "");
 }
 
 function escapeAttr(text) {

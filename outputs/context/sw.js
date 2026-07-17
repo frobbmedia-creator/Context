@@ -1,14 +1,14 @@
-const CACHE_NAME = "context-static-v14";
+const CACHE_NAME = "context-static-v15";
 const STATIC_ASSETS = [
   "./",
   "./index.html",
-  "./styles.css?v=14",
-  "./app.js?v=14",
-  "./worker.js?v=14",
-  "./tokenizer.js?v=14",
-  "./compressor.js?v=14",
-  "./favicon.svg?v=14",
-  "./manifest.webmanifest?v=14"
+  "./styles.css?v=15",
+  "./app.js?v=15",
+  "./worker.js?v=15",
+  "./tokenizer.js?v=15",
+  "./compressor.js?v=15",
+  "./favicon.svg?v=15",
+  "./manifest.webmanifest?v=15"
 ];
 
 self.addEventListener("install", (event) => {
