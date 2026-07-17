@@ -610,7 +610,8 @@ function indexSources() {
     payload: {
       files: state.sources,
       model: els.modelSelect.value,
-      compression: els.compressionSelect.value
+      compression: els.compressionSelect.value,
+      rootHandle: state.directoryHandle
     }
   });
   renderSummary();
@@ -705,7 +706,7 @@ function renderFileList() {
 
 function fileRow(record) {
   const row = document.createElement("div");
-  row.className = `file-row ${record.ignored ? "ignored" : ""}`;
+  row.className = `file-row ${record.ignored ? "ignored" : ""} ${record.priority >= 80 ? "git-active" : ""}`;
   row.setAttribute("role", "listitem");
 
   const checkbox = document.createElement("input");
@@ -723,6 +724,12 @@ function fileRow(record) {
   path.innerHTML = `<strong></strong><span></span>`;
   path.querySelector("strong").textContent = record.path;
   path.querySelector("span").textContent = [record.language, record.ignored ? record.ignoreReason : "", record.binary ? "binary" : ""].filter(Boolean).join(" · ");
+  if (record.priority >= 80) {
+    const badge = document.createElement("span");
+    badge.className = "git-badge";
+    badge.textContent = "modified";
+    path.querySelector("strong").appendChild(badge);
+  }
 
   const saved = Math.max(0, (record.fullTokens || 0) - record.tokens);
   const tokens = meta(saved ? `${formatNumber(record.tokens)} tok (-${formatNumber(saved)})` : `${formatNumber(record.tokens)} tok`);

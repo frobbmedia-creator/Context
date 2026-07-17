@@ -7,6 +7,60 @@ importScripts("./tokenizer.js?v=15");
 importScripts("./compressor.js?v=15");
 
 let dbPromise;
+let gitStatusRegistry = new Map();
+
+async function parseGitIndex(file) {
+  try {
+    const buffer = await file.arrayBuffer();
+    const view = new DataView(buffer);
+    if (view.getUint32(0, false) !== 0x44495243) return;
+
+    const totalEntries = view.getUint32(8, false);
+    const decoder = new TextDecoder();
+    let offset = 12;
+
+    for (let i = 0; i < totalEntries; i += 1) {
+      if (offset + 62 >= buffer.byteLength) break;
+      const pathLength = view.getUint16(offset + 60, false);
+      const pathStart = offset + 62;
+      const pathBytes = new Uint8Array(buffer, pathStart, pathLength);
+      const path = decoder.decode(pathBytes).replace(/\0/g, "");
+
+      gitStatusRegistry.set(path, {
+        path,
+        isModified: false
+      });
+      offset = Math.ceil((pathStart + pathLength) / 8) * 8;
+    }
+  } catch {
+    // Fall back gracefully if Git index parsing fails.
+  }
+}
+
+async function analyzeWorkspaceGit(rootHandle) {
+  gitStatusRegistry.clear();
+  try {
+    const gitDir = await rootHandle.getDirectoryHandle(".git");
+    const indexFileHandle = await gitDir.getFileHandle("index");
+    const indexFile = await indexFileHandle.getFile();
+    await parseGitIndex(indexFile);
+  } catch {
+    // No .git folder or permission denied; fallback to timestamp analysis.
+  }
+}
+
+function calculateGitPriority(path, lastModifiedMs) {
+  const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+  const isRecentlyModified = lastModifiedMs > 0 && (Date.now() - lastModifiedMs) < ONE_DAY_MS;
+
+  if (gitStatusRegistry.has(path) && isRecentlyModified) {
+    return 100;
+  }
+  if (isRecentlyModified) {
+    return 80;
+  }
+  return 20;
+}
 
 self.onmessage = async (event) => {
   const { type, payload } = event.data;
@@ -22,13 +76,19 @@ self.onmessage = async (event) => {
   }
 };
 
-async function indexFiles({ files, model, compression }) {
+async function indexFiles({ files, model, compression, rootHandle }) {
+  if (rootHandle) await analyzeWorkspaceGit(rootHandle);
+  else gitStatusRegistry.clear();
+
   const total = files.length || 1;
   const results = [];
   let cached = 0;
 
   for (let index = 0; index < files.length; index += 1) {
-    const source = files[index];
+    const source = {
+      ...files[index],
+      priority: calculateGitPriority(files[index].path, files[index].mtime || 0)
+    };
     const fingerprint = buildFingerprint(source, model, compression);
     const cachedRecord = await getCached(fingerprint);
 
@@ -96,7 +156,7 @@ async function analyzeSource(source, model, compression, fingerprint) {
     compressor: "Context structural compressor",
     compressorVersion: ContextCompressor.COMPRESSOR_VERSION,
     compression,
-    priority: scoreSource(source.path, language, source.size),
+    priority: source.priority,
     content: compressed,
     originalSample: text.slice(0, 1200),
     warnings,
@@ -105,7 +165,7 @@ async function analyzeSource(source, model, compression, fingerprint) {
 }
 
 function buildFingerprint(source, model, compression) {
-  return [ContextTokenizer.TOKENIZER_VERSION, ContextCompressor.COMPRESSOR_VERSION, HASH_VERSION, source.path, source.size, source.mtime || 0, model, compression].join("|");
+  return [ContextTokenizer.TOKENIZER_VERSION, ContextCompressor.COMPRESSOR_VERSION, HASH_VERSION, source.path, source.size, source.mtime || 0, source.priority || 0, model, compression].join("|");
 }
 
 async function sha256Hex(text) {
@@ -165,18 +225,6 @@ function inferLanguage(path) {
     xml: "XML"
   };
   return map[ext] || "Text";
-}
-
-function scoreSource(path, language, size) {
-  const lower = path.toLowerCase();
-  let score = 50;
-  if (/readme|package\.json|pyproject|cargo\.toml|go\.mod|architecture|spec|prd/.test(lower)) score += 30;
-  if (/\b(src|app|lib|server|api|components)\b/.test(lower)) score += 18;
-  if (/test|spec|fixture|mock/.test(lower)) score -= 8;
-  if (/lock|generated|vendor|dist|build/.test(lower)) score -= 35;
-  if (language === "Markdown") score += 8;
-  if (size > 300_000) score -= 18;
-  return Math.max(1, Math.min(100, score));
 }
 
 function openDb() {

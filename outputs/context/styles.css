@@ -412,6 +412,11 @@ textarea {
   opacity: 0.5;
 }
 
+.file-row.git-active {
+  border-left: 2px solid #0d9488;
+  background: linear-gradient(90deg, rgba(13, 148, 136, 0.03) 0%, rgba(9, 9, 11, 0.6) 100%);
+}
+
 .file-path {
   min-width: 0;
 }
@@ -428,6 +433,21 @@ textarea {
 .file-meta {
   color: var(--subtle);
   font-size: 12px;
+}
+
+.git-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-family: var(--mono);
+  background-color: rgba(13, 148, 136, 0.15);
+  color: #0d9488;
+  border: 1px solid rgba(13, 148, 136, 0.3);
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin-left: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .file-meta {
