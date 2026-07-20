@@ -1,6 +1,6 @@
 /**
  * Structural compressor — deterministic, language-aware elision
- * Upgraded from browser version with slightly better JS/TS/Python handling.
+ * v0.3.1 — sharper skeletons for JS/TS/Python + better modern patterns
  */
 
 export function transformText(text, mode = 'structural', language = 'Text') {
@@ -26,11 +26,11 @@ function compactText(text) {
 function summarizeText(text) {
   const lines = compactText(text).split('\n');
   const important = lines.filter((line) =>
-    /^(#|import |export |class |function |interface |type |const |let |var |def |pub |package |module |describe\(|it\(|test\()/i.test(
+    /^(#|import |export |class |function |interface |type |const |let |var |def |pub |package |module |describe\(|it\(|test\(|fn |struct |enum |impl |trait )/i.test(
       line.trim()
     )
   );
-  return important.slice(0, 240).join('\n') || lines.slice(0, 120).join('\n');
+  return important.slice(0, 280).join('\n') || lines.slice(0, 140).join('\n');
 }
 
 function structuralText(text, language) {
@@ -66,7 +66,7 @@ function structuralJsTs(text) {
 
     if (isJsStructuralLine(trimmed)) {
       if (blockComment.length) {
-        output.push(...blockComment.slice(0, 6));
+        output.push(...blockComment.slice(0, 5));
         blockComment = [];
       }
       output.push(elideJsLine(trimmed));
@@ -76,17 +76,26 @@ function structuralJsTs(text) {
 }
 
 function isJsStructuralLine(line) {
-  return (
-    /^(import|export\s+(type|interface|class|function|const|let|var|enum|default)|interface|type|class|function|const\s+\w+\s*=\s*(async\s*)?\(|const\s+\w+\s*=\s*[^=]*=>|async function)/.test(
-      line
-    ) || /^(public|private|protected|static|async|get|set)\s+[\w$]+\s*\(/.test(line)
-  );
+  if (/^(import|export)\b/.test(line)) return true;
+  if (/^(export\s+)?(type|interface|enum|namespace|declare)\b/.test(line)) return true;
+  if (/^(export\s+)?(default\s+)?(async\s+)?(function|class|abstract\s+class)\b/.test(line)) return true;
+  if (/^(export\s+)?(const|let|var)\s+[A-Z$][\w$]*\s*=/.test(line)) return true;
+  if (/^(export\s+)?(const|let)\s+use[A-Z]\w*\s*=/.test(line)) return true;
+  if (/^(export\s+)?(const|let)\s+\w+\s*=\s*(async\s*)?\(/.test(line)) return true;
+  if (/^(export\s+)?(const|let)\s+\w+\s*=\s*async\s*\(/.test(line)) return true;
+  if (/^(public|private|protected|static|async|get|set|readonly)\s+[\w$]+\s*[\(=]/.test(line)) return true;
+  if (/^@\w+/.test(line)) return true;
+  return false;
 }
 
 function elideJsLine(line) {
-  if (/^import\b/.test(line) || /^export\s+.*from\b/.test(line)) return line;
+  if (/^(import|export\s+.*from)\b/.test(line)) return line;
+  if (/^(export\s+)?(type|interface|enum)\b/.test(line) && !/[{]/.test(line)) return line;
   if (/[{]\s*$/.test(line)) return `${line} /* ... */ }`;
   if (/=>\s*[{(]/.test(line)) return line.replace(/=>\s*[{(].*$/, '=> /* ... */');
+  if (/=\s*[{(]/.test(line) && !/=\s*[{(].*[})]/.test(line)) {
+    return line.replace(/=\s*[{(].*$/, '= /* ... */');
+  }
   return line.replace(/\s*{\s*.*$/, ' { /* ... */ }');
 }
 
@@ -98,15 +107,24 @@ function structuralPython(text) {
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
-    if (/^from\s+\S+\s+import\b|^import\s+\S+/.test(trimmed)) {
+
+    if (/^(from\s+\S+\s+import\b|import\s+\S+)/.test(trimmed)) {
       output.push(trimmed);
-    } else if (/^@\w/.test(trimmed)) {
+      continue;
+    }
+    if (/^@\w/.test(trimmed)) {
       decorators.push(trimmed);
-    } else if (/^(async\s+)?def\s+\w+\(|^class\s+\w+/.test(trimmed)) {
+      continue;
+    }
+    if (/^(async\s+)?def\s+\w+\(|^class\s+\w+/.test(trimmed)) {
       const indent = line.match(/^\s*/)[0];
       output.push(...decorators.map((d) => `${indent}${d}`));
       decorators = [];
-      output.push(`${indent}${trimmed} ...`);
+      output.push(`${indent}${trimmed}${trimmed.endsWith(':') ? ' ...' : ''}`);
+      continue;
+    }
+    if (/^[A-Z][A-Z0-9_]*\s*=/.test(trimmed) || /^__all__\s*=/.test(trimmed)) {
+      output.push(trimmed);
     }
   }
   return limitStructural(output, text);
@@ -119,15 +137,19 @@ function structuralBraceLanguage(text) {
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
-    if (/^(package|module|namespace|using|#include|import|use\s|pub use|extern crate)\b/.test(trimmed)) {
+
+    if (/^(package|module|namespace|using|#include|import|use\s|pub use|extern crate|from\s+\w+\s+import)\b/.test(trimmed)) {
       output.push(trimmed);
-    } else if (
-      /^(pub\s+)?(struct|enum|trait|impl|fn|func|class|interface|record|public|private|protected|static|final|open|data|sealed)\b/.test(
-        trimmed
-      )
+      continue;
+    }
+    if (
+      /^(pub(\s+\([\w\s]+\))?\s+)?(struct|enum|trait|impl|fn|func|class|interface|record|type|const|static|final|open|data|sealed|actor)\b/.test(trimmed) ||
+      /^(public|private|protected|internal|fileprivate|open|final|static|override|async)\s+/.test(trimmed)
     ) {
       output.push(elideBraceLine(trimmed));
-    } else if (/^[A-Za-z_][\w:<>,\s*&?.\[\]-]+\s+\w+\s*\([^;]*\)\s*[{;]?$/.test(trimmed)) {
+      continue;
+    }
+    if (/^[A-Za-z_][\w:<>,\s*&?.\[\]-]+\s+\w+\s*\([^;]*\)\s*[{;]?$/.test(trimmed)) {
       output.push(elideBraceLine(trimmed));
     }
   }
@@ -135,12 +157,12 @@ function structuralBraceLanguage(text) {
 }
 
 function elideBraceLine(line) {
-  if (line.endsWith(';')) return line;
+  if (line.endsWith(';') || line.endsWith('}')) return line;
   return line.replace(/\s*{\s*.*$/, ' { /* ... */ }');
 }
 
 function structuralData(text) {
-  return text.split('\n').slice(0, 160).join('\n');
+  return text.split('\n').slice(0, 180).join('\n');
 }
 
 function limitStructural(lines, fallbackText) {
@@ -152,5 +174,5 @@ function limitStructural(lines, fallbackText) {
       unique.push(line);
     }
   }
-  return unique.slice(0, 420).join('\n') || summarizeText(fallbackText);
+  return unique.slice(0, 480).join('\n') || summarizeText(fallbackText);
 }
