@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * Context CLI v0.3.0 — Icon status: free 14-day top-tier Watch trial + conversion engine
+ * Context CLI v0.3.0 — Icon status: free 14-day top-tier Watch trial + Context Score + invite
  */
 import { Command } from 'commander';
 import path from 'node:path';
 import { packWorkspace, watchWorkspace, printStatus } from '../src/cli-core.js';
 import { startMcpServer } from '../src/mcp-server.js';
-import { checkProAccess, printTrialInfo } from '../src/trial.js';
+import { checkProAccess, printTrialInfo, generateInviteCode, formatInviteMessage } from '../src/trial.js';
 
 const version = '0.3.0';
 const program = new Command();
@@ -45,7 +45,8 @@ program
       });
       await writeOutput(result.content, opts.out);
       if (opts.out !== 'stdout') {
-        console.error(`✓ Packed ${result.stats.included} files · ${result.stats.tokens} tokens · ${result.stats.saved} saved`);
+        const scoreBit = result.score ? ` · Score ${result.score.score}/100` : '';
+        console.error(`✓ Packed ${result.stats.included} files · ${result.stats.tokens} tokens · ${result.stats.saved} saved${scoreBit}`);
       }
     } catch (err) {
       console.error('Error:', err.message);
@@ -66,12 +67,9 @@ program
   .option('-p, --prompt <text>', 'User task prompt', '')
   .option('--debounce <ms>', 'Debounce ms after last change', '400')
   .action(async (dir, opts) => {
-    // Free top-tier trial gate — carefully cost-controlled (local only, once per machine)
     const access = await checkProAccess('watch');
     if (access.message) console.error(access.message);
-    if (!access.allowed) {
-      process.exit(1);
-    }
+    if (!access.allowed) process.exit(1);
 
     console.error(`Context watch · ${path.resolve(dir)} · budget ${opts.budget} · ${opts.model}`);
     console.error('Re-packing on save →', opts.out);
@@ -103,6 +101,15 @@ program
   .description('Show Pro trial / license status (free top-tier Watch trial)')
   .action(async () => {
     await printTrialInfo();
+  });
+
+program
+  .command('invite')
+  .description('Generate a shareable invite (viral loop starter)')
+  .action(async () => {
+    const code = await generateInviteCode();
+    console.log(formatInviteMessage(code));
+    console.error('\nShare the message above. Real free-month redemption comes next.');
   });
 
 program
