@@ -1,7 +1,7 @@
 {
   "name": "@frobb-media/context",
-  "version": "0.3.0",
-  "description": "Local-first, Git-aware workspace compressor for LLM-ready XML/JSON. Free browser + CLI with 14-day free top-tier Watch trial.",
+  "version": "0.3.1",
+  "description": "Local-first, git-aware context packs for LLMs. Zero upload. 14-day free Watch trial.",
   "type": "module",
   "bin": {
     "context": "bin/context.js"
@@ -22,7 +22,8 @@
     "gpt",
     "ollama",
     "tokenizer",
-    "compressor"
+    "compressor",
+    "mcp"
   ],
   "author": "Frobb Media",
   "license": "MIT",
