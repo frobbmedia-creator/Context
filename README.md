@@ -1,96 +1,83 @@
-# Context v0.2 — Killer Utility
+# Context v0.2.1
 
 **Local-first · Git-aware · LLM-ready context packs**
 
-Browser utility (free, air-gapped) + CLI daemon with real git status and watch-to-clipboard.
+The killer utility for turning any private workspace into clean, budgeted XML or JSON for Claude, GPT, Gemini, or Ollama — without ever uploading a single file.
 
-## What’s new in v0.2
-
-| Area | Before (v0.1) | After (v0.2) |
-|------|---------------|--------------|
-| Git awareness | Binary `.git/index` + mtime | Real `git status --porcelain` + `git ls-files` |
-| CLI | Vapor | Full `context pack` + `context watch` + `context status` |
-| Watch mode | Missing | Auto re-pack → clipboard/file on every save |
-| MCP | Missing | Experimental stdio server for agents |
-| Packaging | Static web only | npm-ready CLI + original static web |
-
-## Quick start (CLI — the product)
+## Install
 
 ```bash
-npm install
+npm install -g @frobbmedia/context
+# or
+npx @frobbmedia/context
+```
 
-# One-shot pack
-npx context pack . --budget 120000 --model claude --out clipboard
+## Commands
 
-# Daily driver (the conversion feature)
-npx context watch . --budget 120000 --model claude --out clipboard
+```bash
+# One-shot pack (clipboard)
+context pack . --budget 120000 --model claude --out clipboard
+
+# Daily driver — re-packs on every save
+context watch . --budget 120000 --model claude --out clipboard
 
 # Inspect priorities
-npx context status .
+context status .
 
-# Agent integration
-npx context mcp --workspace .
+# Experimental agent integration
+context mcp --workspace .
 ```
 
-### Useful flags
+### Key flags
+
+| Flag | Description | Default |
+|------|-------------|---------| 
+| `-b, --budget` | Total token budget | 128000 |
+| `-r, --reserved` | Tokens reserved for your prompt | 4000 |
+| `-m, --model` | `claude` \| `gpt-5` \| `generic` \| `tiktoken` | claude |
+| `-c, --compression` | `structural` \| `compact` \| `full` \| `summary` | structural |
+| `-f, --format` | `xml` \| `json` | xml |
+| `-o, --out` | `stdout` \| `clipboard` \| `<file>` | stdout |
+| `-p, --prompt` | Task description appended to the bundle | — |
+| `--no-git` | Disable git prioritization | — |
+
+## How it works
 
 ```
-context pack [dir]
-  -b, --budget <tokens>       Total context budget (default 128000)
-  -r, --reserved <tokens>     Leave room for your prompt (default 4000)
-  -m, --model <name>          claude | gpt-5 | generic | tiktoken
-  -c, --compression <mode>    structural | compact | full | summary
-  -f, --format <fmt>          xml | json
-  -o, --out <target>          stdout | clipboard | ./bundle.xml
-  -p, --prompt "Fix the auth bug"
-  --no-git                    Disable git prioritization
+Acquire (fast-glob + .gitignore)
+  → Real git status (porcelain) → priority 100 for any change
+  → Filter binaries & oversized files
+  → Structural compression (keep signatures, elide bodies)
+  → Local token estimate
+  → Greedy budget pack (high priority first)
+  → Export clean XML (CDATA + SHA-256) or JSON
 ```
 
-## Web utility (still free forever)
+Everything stays on your machine. No telemetry of file contents.
 
-The original browser app lives in `outputs/context/`.
-Deploy with Vercel (zero-framework, root rewrite already set).
+## Browser version
 
-## Architecture
-
-```
-Acquire (fast-glob + gitignore)
-  → Real git priority (porcelain status)
-  → Filter binaries & large files
-  → Compress (structural / compact / …)
-  → Token estimate
-  → Greedy budget pack (priority desc)
-  → Export (XML + SHA-256 + omitted audit or JSON)
-```
-
-Everything stays local. No file contents ever leave the machine.
+The original air-gapped browser utility is still available at  
+https://context.frobbmedia.com (static, zero upload, free forever).
 
 ## Monetization
 
-| Tier | Price | What you get |
-|------|-------|--------------|
-| Core Web | $0 | Full browser utility |
-| Pro | $9 / mo | CLI + watch + clipboard + local pipelines |
-| Enterprise | $19 / user / mo | Air-gapped Docker, secret scanner, seats, SLA |
+| Tier | Price | Includes |
+|------|-------|----------|
+| Core Web | Free | Full browser utility |
+| Pro | $9/mo | CLI + watch mode + clipboard sync |
+| Enterprise | $19/user/mo | Air-gapped Docker, secret scanner, seats |
 
-The CLI + watch loop is the conversion engine.
+## Development
 
-## Launch & Market
-
-See `docs/LAUNCH_AND_MARKET.md` for the full 72-hour playbook, positioning, distribution channels, and metrics.
-
-## Security
-
-- CLI never phones home.
-- Web: strict CSP, `connect-src 'self'`, no upload endpoints.
-- SHA-256 on every included file.
-- Omitted-file audit so the model knows what was left out.
+```bash
+git clone https://github.com/frobbmedia-creator/Context.git
+cd Context
+npm install
+npm test
+npx context pack . --out /tmp/test.xml
+```
 
 ## License
 
-MIT — see LICENSE.md
-
----
-
-**This is the version that ships.**  
-Browser MVP proved the idea. CLI + real git + watch mode makes it a killer utility.
+MIT
