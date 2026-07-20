@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.3.0] — 2026-07-20
+
+### Added — Icon Status Release
+- **Free 14-day top-tier Pro trial** for `context watch` (full daily-driver features).
+  - Starts automatically on first watch.
+  - Local-only (`~/.config/context/trial.json`), once per machine.
+  - Zero server cost, zero code telemetry.
+  - Clear banners + urgency messaging. Designed for conversion, not unlimited free.
+- New command: `context trial` (status of trial / license).
+- `context status` now also surfaces trial state.
+- Hard gate after trial expiry: pack remains free forever; watch requires Pro.
+- Version and messaging polished for iconic daily-driver positioning.
+
+### Why this design
+- Generous first experience so users feel the must-have habit (Sean Ellis).
+- Finite window creates natural urgency without being aggressive.
+- Local implementation = no infrastructure cost to "watch".
+- Conversion path is explicit and one-click from the CLI banners.
+
 ## [0.2.1] — 2026-07-20
 
 ### Fixed
