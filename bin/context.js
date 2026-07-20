@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 /**
- * Context CLI v0.2.2 — reliable bin entry
+ * Context CLI v0.3.0 — Icon status: free 14-day top-tier Watch trial + conversion engine
  */
 import { Command } from 'commander';
 import path from 'node:path';
 import { packWorkspace, watchWorkspace, printStatus } from '../src/cli-core.js';
 import { startMcpServer } from '../src/mcp-server.js';
+import { checkProAccess, printTrialInfo } from '../src/trial.js';
 
-const version = '0.2.2';
+const version = '0.3.0';
 const program = new Command();
 
 program
@@ -17,7 +18,7 @@ program
 
 program
   .command('pack')
-  .description('Pack a workspace into structured XML or JSON for an LLM')
+  .description('Pack a workspace into structured XML or JSON for an LLM (always free)')
   .argument('[dir]', 'Workspace directory', '.')
   .option('-b, --budget <tokens>', 'Total token budget', '128000')
   .option('-r, --reserved <tokens>', 'Reserved tokens for the user prompt', '4000')
@@ -54,7 +55,7 @@ program
 
 program
   .command('watch')
-  .description('Watch workspace and re-pack on changes')
+  .description('Watch workspace and re-pack on changes (Pro daily-driver — 14-day free top-tier trial)')
   .argument('[dir]', 'Workspace directory', '.')
   .option('-b, --budget <tokens>', 'Total token budget', '128000')
   .option('-r, --reserved <tokens>', 'Reserved tokens', '4000')
@@ -65,7 +66,15 @@ program
   .option('-p, --prompt <text>', 'User task prompt', '')
   .option('--debounce <ms>', 'Debounce ms after last change', '400')
   .action(async (dir, opts) => {
+    // Free top-tier trial gate — carefully cost-controlled (local only, once per machine)
+    const access = await checkProAccess('watch');
+    if (access.message) console.error(access.message);
+    if (!access.allowed) {
+      process.exit(1);
+    }
+
     console.error(`Context watch · ${path.resolve(dir)} · budget ${opts.budget} · ${opts.model}`);
+    console.error('Re-packing on save →', opts.out);
     await watchWorkspace(path.resolve(dir), {
       budget: Number(opts.budget),
       reserved: Number(opts.reserved),
@@ -80,11 +89,20 @@ program
 
 program
   .command('status')
-  .description('Show git-aware file priorities and estimated tokens')
+  .description('Show git-aware file priorities, estimated tokens, and trial status')
   .argument('[dir]', 'Workspace directory', '.')
   .option('-m, --model <name>', 'Tokenizer profile', 'claude')
   .action(async (dir, opts) => {
+    await printTrialInfo();
+    console.error('');
     await printStatus(path.resolve(dir), { model: opts.model });
+  });
+
+program
+  .command('trial')
+  .description('Show Pro trial / license status (free top-tier Watch trial)')
+  .action(async () => {
+    await printTrialInfo();
   });
 
 program
