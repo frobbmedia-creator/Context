@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CONTEXT — Local-First, Git-Aware Workspace Compressor for LLMs</title>
-  <meta name="description" content="Structure, compress, and package local code directories into beautiful, LLM-ready XML/JSON prompt bundles with absolute, air-gapped security.">
+  <meta name="description" content="Structure, compress, and package local code directories into beautiful, LLM-ready XML/JSON prompt bundles with absolute, air-gapped security. Free browser utility + real CLI with watch mode.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none';">
   <script defer src="/_vercel/insights/script.js"></script>
   <style>
@@ -24,76 +24,71 @@
     body { background-color: var(--bg-main); color: var(--text-primary); font-family: var(--font-sans); line-height: 1.6; -webkit-font-smoothing: antialiased; }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
     
-    /* Premium Header and Bold Brand Presentation */
     header { border-bottom: 1px solid var(--border-color); padding: 2rem 0; background: rgba(9, 9, 11, 0.5); backdrop-filter: blur(8px); }
     .header-nav { display: flex; justify-content: space-between; align-items: center; }
     
-    /* Giant, Premium Brand Identity */
     .brand { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: var(--text-primary); }
     .brand-logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-weight: 900;
-      font-size: 1.6rem;
-      color: var(--text-primary);
-      background: linear-gradient(135deg, #18181b 0%, #09090b 100%);
-      border: 2px solid var(--teal-accent);
-      border-radius: 8px;
-      width: 48px;
-      height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-weight: 900; font-size: 1.6rem;
+      color: var(--text-primary); background: linear-gradient(135deg, #18181b 0%, #09090b 100%);
+      border: 2px solid var(--teal-accent); border-radius: 8px; width: 48px; height: 48px;
       box-shadow: 0 0 15px var(--teal-glow);
     }
     .brand-name { font-weight: 900; font-size: 2.2rem; letter-spacing: -0.05em; text-transform: uppercase; background: linear-gradient(180deg, #ffffff 30%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     
     .security-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(13, 148, 136, 0.08); border: 1px solid rgba(13, 148, 136, 0.25); padding: 0.5rem 1rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.8rem; color: var(--teal-accent); font-weight: 600; }
     
-    /* Hero Section */
     .hero { padding: 8rem 0 5rem 0; text-align: center; }
     .hero h1 { font-size: 4.2rem; font-weight: 900; letter-spacing: -0.05em; line-height: 1.05; margin-bottom: 2rem; background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .hero p { font-size: 1.35rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto 3rem auto; font-weight: 400; }
     
-    /* Call to Action Controls */
-    .cta-group { display: flex; justify-content: center; gap: 1.25rem; margin-bottom: 4rem; }
+    .cta-group { display: flex; justify-content: center; gap: 1.25rem; margin-bottom: 2rem; flex-wrap: wrap; }
     .btn { display: inline-flex; align-items: center; justify-content: center; padding: 1rem 2rem; border-radius: 8px; font-weight: 700; font-size: 1.05rem; text-decoration: none; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; }
     .btn-primary { background-color: var(--teal-accent); color: var(--text-primary); border: 1px solid var(--teal-accent); box-shadow: 0 6px 20px var(--teal-glow); }
     .btn-primary:hover { background-color: #115e59; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4); }
     .btn-secondary { background-color: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); }
     .btn-secondary:hover { border-color: var(--teal-accent); color: var(--text-primary); transform: translateY(-2px); }
     
-    /* Trust Ribbon */
-    .trust-ribbon { display: flex; justify-content: center; gap: 2.5rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 1.25rem 0; margin-bottom: 6rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .cli-install {
+      display: inline-block; margin: 0 auto 3rem; background: var(--bg-panel); border: 1px solid var(--border-color);
+      border-radius: 10px; padding: 1rem 1.5rem; font-family: var(--font-mono); font-size: 0.95rem; color: var(--teal-accent);
+    }
+    .cli-install code { color: var(--text-primary); }
     
-    /* Drag & Drop Visual Terminal Window */
+    .trust-ribbon { display: flex; justify-content: center; gap: 2.5rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 1.25rem 0; margin-bottom: 6rem; text-transform: uppercase; letter-spacing: 0.05em; flex-wrap: wrap; }
+    
     .app-preview-container { background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 3rem; text-align: center; margin-bottom: 8rem; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
     .app-preview-container::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 50%; height: 2px; background: linear-gradient(90deg, transparent, var(--teal-accent), transparent); }
     .dropzone-placeholder { border: 2px dashed rgba(13, 148, 136, 0.3); border-radius: 12px; padding: 5rem 2rem; background-color: rgba(9, 9, 11, 0.6); transition: all 0.25s ease; cursor: pointer; }
     .dropzone-placeholder:hover { border-color: var(--teal-accent); background-color: rgba(13, 148, 136, 0.03); box-shadow: inset 0 0 20px rgba(13, 148, 136, 0.05); }
     .dropzone-icon { font-size: 3.5rem; margin-bottom: 1.5rem; filter: drop-shadow(0 0 10px var(--teal-glow)); }
     
-    /* Core Value Pillars */
     .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-bottom: 8rem; }
     .feature-card { background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 2.5rem; transition: border-color 0.2s ease; }
     .feature-card:hover { border-color: rgba(13, 148, 136, 0.4); }
     .feature-card h3 { font-size: 1.35rem; margin-bottom: 1rem; color: var(--text-primary); font-weight: 800; letter-spacing: -0.02em; }
     .feature-card p { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
     
-    /* Pricing Structures */
     .pricing-section { text-align: center; margin-bottom: 8rem; }
     .pricing-section h2 { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.04em; }
     .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 4rem; text-align: left; }
     .pricing-card { background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 3rem 2.5rem; display: flex; flex-direction: column; position: relative; }
     .pricing-card.premium { border-color: var(--teal-accent); box-shadow: 0 10px 30px rgba(13, 148, 136, 0.12); }
-    .pricing-card.premium::after { content: 'RECOMMENDED'; position: absolute; top: -12px; right: 24px; background-color: var(--teal-accent); color: var(--text-primary); font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 4px; letter-spacing: 0.05em; }
+    .pricing-card.premium::after { content: 'CLI LIVE'; position: absolute; top: -12px; right: 24px; background-color: var(--teal-accent); color: var(--text-primary); font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 4px; letter-spacing: 0.05em; }
     .pricing-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; font-weight: 800; }
     .price { font-size: 2.4rem; font-weight: 900; margin-bottom: 2rem; color: var(--text-primary); font-family: var(--font-mono); }
     .price span { font-size: 1rem; font-weight: 400; color: var(--text-secondary); font-family: var(--font-sans); }
-    .pricing-features { list-style-type: none; margin-bottom: 3rem; flex-grow: 1; }
+    .pricing-features { list-style-type: none; margin-bottom: 2rem; flex-grow: 1; }
     .pricing-features li { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 0.75rem; }
     .pricing-features li::before { content: "✓"; color: var(--teal-accent); font-weight: bold; }
     
-    /* Expanded Tech FAQ Design */
+    .install-box {
+      background: #0c0c0e; border: 1px solid var(--border-color); border-radius: 8px;
+      padding: 0.85rem 1rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--teal-accent);
+      margin-bottom: 1rem; word-break: break-all;
+    }
+    
     .faq-section { max-width: 900px; margin: 0 auto 10rem auto; }
     .faq-section h2 { text-align: center; margin-bottom: 4rem; font-size: 2.5rem; font-weight: 900; letter-spacing: -0.04em; }
     .faq-item { border-bottom: 1px solid var(--border-color); padding: 2rem 0; }
@@ -113,40 +108,41 @@
   <header>
     <div class="container header-nav">
       <a href="#" class="brand">
-        <!-- Rebuilt Bento-Terminal Logo Icon -->
         <div class="brand-logo">[C]</div>
-        <!-- Oversized Premium Brand Name -->
         <span class="brand-name">Context</span>
       </a>
       <div class="security-badge">
-        <span>● Local Processing + Vercel Analytics</span>
+        <span>● CLI Live · Local Processing · v0.2.1</span>
       </div>
     </div>
   </header>
 
   <main class="container">
     
-    <!-- Hero Block -->
     <section class="hero">
       <h1>Optimized LLM Workspace Prompts.<br>Strictly 100% Local.</h1>
-      <p>Stop uploading your proprietary codebases to random cloud aggregators. Context auto-analyzes, compresses, and packages directories locally in your browser, with only first-party Vercel page analytics enabled.</p>
+      <p>Stop uploading your proprietary codebases to random cloud aggregators. Context auto-analyzes, compresses, and packages directories locally — in the browser or via the real CLI with watch mode.</p>
       
       <div class="cta-group">
-        <a href="/app" class="btn btn-primary">Launch Free Utility</a>
-        <a href="#faq" class="btn btn-secondary">System Technical FAQ</a>
+        <a href="/app" class="btn btn-primary">Launch Free Web Utility</a>
+        <a href="#cli" class="btn btn-secondary">Get the CLI</a>
+      </div>
+      
+      <div class="cli-install" id="cli">
+        <code>npm install -g @frobbmedia/context</code>
       </div>
     </section>
 
-    <!-- PWA Trust Flags -->
     <div class="trust-ribbon">
       <span>Zero registration</span>
       <span>•</span>
       <span>No file uploads</span>
       <span>•</span>
-      <span>Local browser parsing</span>
+      <span>Local browser + CLI</span>
+      <span>•</span>
+      <span>Real git status</span>
     </div>
 
-    <!-- Interface Preview / Drag Target -->
     <section class="app-preview-container">
       <div class="dropzone-placeholder" onclick="window.location.href='/app'">
         <div class="dropzone-icon">📁</div>
@@ -157,26 +153,24 @@
       </div>
     </section>
 
-    <!-- Core Pillars -->
     <section class="features-grid">
       <div class="feature-card">
         <h3>Git-Aware Context Budgeting</h3>
-        <p>Directly parses your local binary .git/index in real-time. Automatically locks edited files to full fidelity, compresses surrounding helper scopes, and omits unchanged files to slash prompt token fees by up to 80%.</p>
+        <p>Real <code>git status --porcelain</code> prioritization. Changed files get full fidelity; surrounding code is compressed. Slash prompt token fees by up to 80% without losing the important context.</p>
       </div>
       <div class="feature-card">
         <h3>Air-Gapped Privacy Core</h3>
-        <p>Hardened Content Security Policies keep file processing local while allowing same-origin Vercel Analytics requests for site traffic measurement. Your workspace files are never uploaded by the app.</p>
+        <p>Hardened Content Security Policies keep file processing local. The CLI never phones home. Your workspace files are never uploaded by the application.</p>
       </div>
       <div class="feature-card">
         <h3>Structured Layout Templates</h3>
-        <p>Pipes raw files into robust, schema-compliant XML or JSON structures. Features SHA-256 data integrity hashing, sanitizes illegal escape formats, and formats output with CDATA blocks for absolute model safety.</p>
+        <p>Pipes raw files into robust, schema-compliant XML or JSON. SHA-256 integrity hashing, sanitized escapes, and CDATA blocks for absolute model safety.</p>
       </div>
     </section>
 
-    <!-- Commercial Tier Options -->
     <section class="pricing-section">
       <h2>Sane, Host-Direct Pricing</h2>
-      <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 1.1rem;">Because Context compiles locally, we don't bleed cash hosting processing servers. You benefit directly.</p>
+      <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 1.1rem;">Because Context runs locally, we don't bleed cash on processing servers. You benefit directly.</p>
       
       <div class="pricing-grid">
         <div class="pricing-card">
@@ -185,31 +179,32 @@
           <ul class="pricing-features">
             <li>100% Client-Side Web Application</li>
             <li>Browser File System API Integration</li>
-            <li>Interactive Token Budget Tuning Slider</li>
+            <li>Interactive Token Budget Tuning</li>
             <li>Valid XML and JSON Prompt Construction</li>
             <li>Global Exclude Rule Management</li>
           </ul>
-          <a href="/app" class="btn btn-secondary" style="margin-top: auto; width: 100%;">Open App Utility</a>
+          <a href="/app" class="btn btn-secondary" style="margin-top: auto; width: 100%;">Open Web Utility</a>
         </div>
 
         <div class="pricing-card premium">
           <h3>Pro Developer</h3>
           <div class="price">$9<span> / month</span></div>
           <ul class="pricing-features">
-            <li><strong>The CLI Daemon:</strong> Watch, build, and compile folders on save</li>
-            <li><strong>Automatic Clip Synchronization:</strong> Workspace payload updates directly to clipboard</li>
-            <li><strong>Local Pipeline Piping:</strong> Run shell scripts straight to Ollama or LlamaEdge</li>
-            <li>Unlimited Saved Configuration Presets</li>
+            <li><strong>CLI is live now:</strong> pack + watch + status</li>
+            <li><strong>Watch mode:</strong> re-pack on every save → clipboard</li>
+            <li><strong>Real git prioritization</strong></li>
+            <li>Unlimited local presets & pipelines</li>
           </ul>
-          <a href="https://buy.stripe.com/8x2fZgh0M0qG1SI8mQb7y01" class="btn btn-primary" style="margin-top: auto; width: 100%;">Upgrade Workspace</a>
+          <div class="install-box">npm i -g @frobbmedia/context</div>
+          <a href="https://buy.stripe.com/8x2fZgh0M0qG1SI8mQb7y01" class="btn btn-primary" style="width: 100%;">Support Pro · $9/mo</a>
         </div>
 
         <div class="pricing-card">
           <h3>Secure Enterprise</h3>
           <div class="price">$19<span> / user / mo</span></div>
           <ul class="pricing-features">
-            <li><strong>Air-Gapped Docker Bundle:</strong> Local private container host</li>
-            <li><strong>Autonomous Security Scanner:</strong> Stop private keys and PII before pipeline exits</li>
+            <li><strong>Air-Gapped Docker Bundle</strong></li>
+            <li><strong>Autonomous Security Scanner</strong></li>
             <li>Central Workspace Team Seat Console</li>
             <li>Dedicated SLA Implementation & Support</li>
           </ul>
@@ -218,48 +213,32 @@
       </div>
     </section>
 
-    <!-- Deep-Dive Tech FAQs -->
     <section class="faq-section" id="faq">
       <h2>Technical Deep Dive & FAQ</h2>
       
       <div class="faq-item">
         <div class="faq-question">How does Context read my workspace without sending it to a server?</div>
-        <div class="faq-answer">We leverage the modern File System Access API (showDirectoryPicker). When you pick a folder, your browser creates a secure, temporary local handle. Context directly maps these handles to offline web worker threads. Your codebase is parsed, filtered, and aggregated inside isolated sandbox memory—and completely flushed when you close the browser tab.</div>
+        <div class="faq-answer">Browser version uses the File System Access API + workers. CLI version reads the filesystem directly. In both cases your code never leaves the machine.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question">How does the Git-aware prioritization scale, and does it write to my workspace?</div>
-        <div class="faq-answer">No write operations are performed. The app opens your filesystem workspace handles with strict read-only permissions. We locate your local .git/index file, parse its binary stream inside a web worker to map tracking flags, and cross-reference file timestamps against last-modified heuristics. This allows us to auto-assign high weights to edited code and compress raw surrounding codebases without modifying a single block of your Git tree.</div>
+        <div class="faq-question">How does the Git-aware prioritization work?</div>
+        <div class="faq-answer">The CLI runs real <code>git status --porcelain</code> and <code>git ls-files</code>. Any working-tree change gets priority 100. The browser version uses a lighter index + mtime heuristic. Neither writes to your repository.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question">How are token estimations computed without downloading a massive binary file?</div>
-        <div class="faq-answer">Instead of forcing users to download 15MB+ Tiktoken WASM blocks, we wrote a lightweight local token parser (tokenizer.js). By scanning AST syntax densities and evaluating character weight tables across different programming languages, it calculates token distributions staying within a ±5% deviation threshold of GPT-4o/Claude-3 cl100k_base.</div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">Firefox and Safari don't fully support the Folder Picker API. What happens?</div>
-        <div class="faq-answer">We built a fast browser-native ZIP extraction fallback. If Context detects Safari or Firefox, it activates an offline dropzone target. Simply zip your folder, drop it in, and our background Web Worker uses native browser DecompressionStreams to inflate, index, and compress your workspace in pure sandboxed RAM.</div>
+        <div class="faq-question">Is the CLI free?</div>
+        <div class="faq-answer">The source is MIT-licensed. You can install and run it today with <code>npm install -g @frobbmedia/context</code>. The $9/mo Pro tier supports continued development and unlocks priority features and support.</div>
       </div>
 
       <div class="faq-item">
         <div class="faq-question">What is a Content Security Policy (CSP), and why is yours so strict?</div>
-        <div class="faq-answer">A Content Security Policy is a security firewall enforced by the browser. Context keeps scripts and workers self-hosted, allows same-origin Vercel Analytics requests, and does not upload workspace file contents. File parsing and packaging stay in the local browser runtime.</div>
+        <div class="faq-answer">A Content Security Policy is a security firewall enforced by the browser. Context keeps scripts and workers self-hosted, allows same-origin Vercel Analytics requests, and does not upload workspace file contents.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question">How are custom ignore and exclusion rules handled locally?</div>
-        <div class="faq-answer">We automatically locate and read your local .gitignore configurations during directories mapping. Additionally, you can configure custom global rule patterns on the UI interface. All these exclusion filters are parsed and executed inside index workers so useless directories like node_modules or .direnv are completely ignored prior to computing weight priorities.</div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">Can the application handle massive repositories without causing memory leaks?</div>
-        <div class="faq-answer">Yes. Because our pipeline is strictly non-blocking, file processing is delegated entirely to background worker threads. Instead of caching heavy raw file strings in memory, the system indexes file-paths and dynamic modification metrics first, keeping memory allocation minimal and maintaining a smooth 60 FPS workspace UI.</div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">What makes your output payloads safer for LLMs than standard raw code copy-pasting?</div>
-        <div class="faq-answer">Models like Claude and Gemini are trained to parse system instructions formatted with XML tags. Context encodes every file payload within isolated XML blocks, sanitizes illegal characters that lead to parser crashes, wraps raw code inside CDATA blocks to prevent nested tags from polluting instructions, and generates checksum validation hashes so the LLM has zero confusion about file states.</div>
+        <div class="faq-question">Can the application handle massive repositories?</div>
+        <div class="faq-answer">Yes. Processing is non-blocking (workers in the browser, efficient streaming in the CLI). Ignore rules are applied early. Memory stays under control even on large monorepos.</div>
       </div>
     </section>
 
@@ -267,7 +246,7 @@
 
   <footer>
     <div class="container">
-      <p>&copy; 2026 Frobb Media. All rights reserved. Context is open-source, client-side developer tooling licensed under MIT.</p>
+      <p>&copy; 2026 Frobb Media. Context is open-source (MIT). CLI v0.2.1 is live.</p>
     </div>
   </footer>
 
