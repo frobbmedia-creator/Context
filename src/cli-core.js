@@ -1,13 +1,15 @@
 /**
  * Context CLI Core — Git-aware packing engine
  * Ports and upgrades the original browser worker logic to Node with real git.
+ *
+ * v0.2.1 — ESM fix for `ignore` (CJS default export)
  */
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { createIgnore } from 'ignore';
+import ignore from 'ignore';          // CJS package — default import required under ESM
 import fg from 'fast-glob';
 import { estimateTokens, tokenizerLabel } from './tokenizer.js';
 import { transformText } from './compressor.js';
@@ -77,7 +79,7 @@ function inferLanguage(filePath) {
 }
 
 async function loadGitignore(root) {
-  const ig = createIgnore();
+  const ig = ignore();                 // default export from CJS package
   try {
     const content = await fs.readFile(path.join(root, '.gitignore'), 'utf8');
     ig.add(content);
