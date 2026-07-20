@@ -1,0 +1,54 @@
+{
+  "name": "@frobbmedia/context",
+  "version": "0.2.0",
+  "description": "Local-first, Git-aware workspace compressor for LLM-ready XML/JSON. Browser utility + CLI daemon with watch mode.",
+  "type": "module",
+  "bin": {
+    "context": "./cli/bin/context.js"
+  },
+  "scripts": {
+    "start": "node cli/bin/context.js",
+    "cli": "node cli/bin/context.js",
+    "test": "node --test tests/*.test.js",
+    "build:web": "echo 'Static web already in outputs/context — deploy via Vercel'",
+    "pack": "npm pack"
+  },
+  "keywords": [
+    "llm",
+    "context",
+    "prompt",
+    "git",
+    "local-first",
+    "claude",
+    "gpt",
+    "ollama",
+    "tokenizer",
+    "compressor"
+  ],
+  "author": "Frobb Media <frobbmedia-creator>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "chokidar": "^4.0.1",
+    "clipboardy": "^4.0.0",
+    "fast-glob": "^3.3.2",
+    "ignore": "^5.3.2"
+  },
+  "optionalDependencies": {
+    "tiktoken": "^1.0.17"
+  },
+  "files": [
+    "cli/",
+    "src/",
+    "README.md",
+    "LICENSE.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frobbmedia-creator/Context.git"
+  },
+  "homepage": "https://context.frobbmedia.com"
+}
