@@ -7,9 +7,9 @@ The killer utility for turning any private workspace into clean, budgeted XML or
 ## Install
 
 ```bash
-npm install -g @frobbmedia/context
+npm install -g @frobb-media/context
 # or
-npx @frobbmedia/context
+npx @frobb-media/context
 ```
 
 ## Commands

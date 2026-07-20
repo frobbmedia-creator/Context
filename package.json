@@ -1,5 +1,5 @@
 {
-  "name": "@frobbmedia/context",
+  "name": "@frobb-media/context",
   "version": "0.2.1",
   "description": "Local-first, Git-aware workspace compressor for LLM-ready XML/JSON. Browser utility + CLI daemon with watch mode.",
   "type": "module",
