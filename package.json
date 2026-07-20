@@ -1,6 +1,6 @@
 {
   "name": "@frobb-media/context",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Local-first, git-aware context packs for LLMs. Zero upload. 14-day free Watch trial.",
   "type": "module",
   "bin": {

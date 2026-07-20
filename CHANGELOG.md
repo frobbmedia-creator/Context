@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.2] — 2026-07-20
+
+### Hotfix: single source of truth for APP_VERSION
+- `src/export.js` was hardcoding `APP_VERSION = '0.2.0'` while npm and CLI shipped as 0.3.1 — every generated bundle header said `version="0.2.0"`, an easy credibility hit for a sharp critic pasting a bundle into the launch thread.
+- New `src/version.js` reads the version from `package.json` at module load. `bin/context.js` and `cli/bin/context.js` also import it for `--version` parity.
+- BUILD_ID bumped to `cli-killer-v3` so bundles from this release are distinguishable.
+- Bundle header now correctly reads `version="0.3.2" build="cli-killer-v3"`.
+- `.gitignore` updated to exclude `node_modules/` and `package-lock.json` (prior commits had them staged).
+
 ## [0.3.1] — 2026-07-20
 
 ### First-impression polish (for harsh developer critics)
