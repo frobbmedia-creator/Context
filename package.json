@@ -1,16 +1,15 @@
 {
   "name": "@frobb-media/context",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Local-first, Git-aware workspace compressor for LLM-ready XML/JSON. Browser utility + CLI daemon with watch mode.",
   "type": "module",
   "bin": {
-    "context": "./cli/bin/context.js"
+    "context": "bin/context.js"
   },
   "scripts": {
-    "start": "node cli/bin/context.js",
-    "cli": "node cli/bin/context.js",
+    "start": "node bin/context.js",
+    "cli": "node bin/context.js",
     "test": "node --test tests/*.test.js",
-    "build:web": "echo 'Static web already in outputs/context — deploy via Vercel'",
     "pack": "npm pack"
   },
   "keywords": [
@@ -25,15 +24,15 @@
     "tokenizer",
     "compressor"
   ],
-  "author": "Frobb Media <frobbmedia-creator>",
+  "author": "Frobb Media",
   "license": "MIT",
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
+    "commander": "^12.1.0",
     "chokidar": "^4.0.1",
     "clipboardy": "^4.0.0",
-    "commander": "^12.1.0",
     "fast-glob": "^3.3.2",
     "ignore": "^5.3.2"
   },
@@ -41,6 +40,7 @@
     "tiktoken": "^1.0.17"
   },
   "files": [
+    "bin/",
     "cli/",
     "src/",
     "README.md",
