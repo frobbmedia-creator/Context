@@ -31,9 +31,9 @@
     "node": ">=18"
   },
   "dependencies": {
-    "commander": "^12.1.0",
     "chokidar": "^4.0.1",
     "clipboardy": "^4.0.0",
+    "commander": "^12.1.0",
     "fast-glob": "^3.3.2",
     "ignore": "^5.3.2"
   },
