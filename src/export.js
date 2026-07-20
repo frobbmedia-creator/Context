@@ -2,8 +2,7 @@
  * XML / JSON exporters with hygiene and omitted-file audit
  */
 
-const APP_VERSION = '0.2.0';
-const BUILD_ID = 'cli-killer-v2';
+import { APP_VERSION, BUILD_ID } from './version.js';
 
 function escapeAttr(text) {
   return String(text).replace(/[&<>"']/g, (char) =>

@@ -8,8 +8,8 @@ import path from 'node:path';
 import { packWorkspace, watchWorkspace, printStatus } from '../../src/cli-core.js';
 import { startMcpServer } from '../../src/mcp-server.js';
 import { checkProAccess, printTrialInfo } from '../../src/trial.js';
+import { APP_VERSION as version } from '../../src/version.js';
 
-const version = '0.3.0';
 const program = new Command();
 
 program
