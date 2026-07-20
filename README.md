@@ -1,25 +1,96 @@
-# Context
+# Context v0.2 — Killer Utility
 
-Static landing + product shell for **context.frobbmedia.com**.
+**Local-first · Git-aware · LLM-ready context packs**
 
-## Layout (do not flatten)
+Browser utility (free, air-gapped) + CLI daemon with real git status and watch-to-clipboard.
+
+## What’s new in v0.2
+
+| Area | Before (v0.1) | After (v0.2) |
+|------|---------------|--------------|
+| Git awareness | Binary `.git/index` + mtime | Real `git status --porcelain` + `git ls-files` |
+| CLI | Vapor | Full `context pack` + `context watch` + `context status` |
+| Watch mode | Missing | Auto re-pack → clipboard/file on every save |
+| MCP | Missing | Experimental stdio server for agents |
+| Packaging | Static web only | npm-ready CLI + original static web |
+
+## Quick start (CLI — the product)
+
+```bash
+npm install
+
+# One-shot pack
+npx context pack . --budget 120000 --model claude --out clipboard
+
+# Daily driver (the conversion feature)
+npx context watch . --budget 120000 --model claude --out clipboard
+
+# Inspect priorities
+npx context status .
+
+# Agent integration
+npx context mcp --workspace .
+```
+
+### Useful flags
 
 ```
-outputs/context/   ← production static assets (index.html, app.js, Stripe CTAs)
-vercel.json        ← URL rewrites so `/` serves outputs/context (no Node build)
+context pack [dir]
+  -b, --budget <tokens>       Total context budget (default 128000)
+  -r, --reserved <tokens>     Leave room for your prompt (default 4000)
+  -m, --model <name>          claude | gpt-5 | generic | tiktoken
+  -c, --compression <mode>    structural | compact | full | summary
+  -f, --format <fmt>          xml | json
+  -o, --out <target>          stdout | clipboard | ./bundle.xml
+  -p, --prompt "Fix the auth bug"
+  --no-git                    Disable git prioritization
 ```
 
-## Vercel (zero-framework)
+## Web utility (still free forever)
 
-- **Do not** add a root `package.json` (triggers npm/container builds).
-- Deploy branch: `main` with `outputs/context/**` present.
-- `vercel.json` rewrites `/*` → `/outputs/context/*` so the public site root is correct while the monorepo path stays nested.
+The original browser app lives in `outputs/context/`.
+Deploy with Vercel (zero-framework, root rewrite already set).
 
-### Optional dashboard alternative
+## Architecture
 
-Project Settings → General → **Root Directory** = `outputs/context`, Framework = **Other**, clear Build/Install.  
-If you use Root Directory, remove the `rewrites` block from `vercel.json` (or delete it) so paths are not double-prefixed.
+```
+Acquire (fast-glob + gitignore)
+  → Real git priority (porcelain status)
+  → Filter binaries & large files
+  → Compress (structural / compact / …)
+  → Token estimate
+  → Greedy budget pack (priority desc)
+  → Export (XML + SHA-256 + omitted audit or JSON)
+```
 
-## Local
+Everything stays local. No file contents ever leave the machine.
 
-Open `outputs/context/index.html` or any static server pointed at that folder.
+## Monetization
+
+| Tier | Price | What you get |
+|------|-------|--------------|
+| Core Web | $0 | Full browser utility |
+| Pro | $9 / mo | CLI + watch + clipboard + local pipelines |
+| Enterprise | $19 / user / mo | Air-gapped Docker, secret scanner, seats, SLA |
+
+The CLI + watch loop is the conversion engine.
+
+## Launch & Market
+
+See `docs/LAUNCH_AND_MARKET.md` for the full 72-hour playbook, positioning, distribution channels, and metrics.
+
+## Security
+
+- CLI never phones home.
+- Web: strict CSP, `connect-src 'self'`, no upload endpoints.
+- SHA-256 on every included file.
+- Omitted-file audit so the model knows what was left out.
+
+## License
+
+MIT — see LICENSE.md
+
+---
+
+**This is the version that ships.**  
+Browser MVP proved the idea. CLI + real git + watch mode makes it a killer utility.
