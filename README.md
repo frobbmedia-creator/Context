@@ -1,92 +1,82 @@
-# Context v0.3.0
+# Context
 
-**Local-first · Git-aware · LLM-ready context packs**
+**Local-first, git-aware context packs for LLMs.**
 
-The killer utility for turning any private workspace into clean, budgeted XML or JSON for Claude, GPT, Gemini, or Ollama — without ever uploading a single file.
-
-**Icon status unlocked:** Free forever one-shot packer + **14-day free top-tier trial** of the full Pro daily-driver (`context watch`).
-
-## Install
+Turn any private workspace into clean, budgeted XML or JSON for Claude, GPT, Gemini, or Ollama — without uploading a single file.
 
 ```bash
 npm install -g @frobb-media/context
-# or
-npx @frobb-media/context
+context watch .
 ```
 
-## Commands
+First `context watch` starts a **14-day free full Pro trial**. One-shot `context pack` is free forever.
+
+---
+
+### Why this exists
+
+Most context tools either:
+- dump the entire repo (noisy, expensive), or
+- require uploading your code.
+
+Context does neither. It uses real `git status` to prioritize the files you actually changed, applies structural compression (signatures stay, bodies go), and respects a hard token budget. Everything stays on your machine.
+
+### Quick start
 
 ```bash
-# One-shot pack (always free)
-context pack . --budget 120000 --model claude --out clipboard
+# Always free — one-shot pack
+context pack . --out clipboard
 
-# Daily driver — full Pro features (14-day free top-tier trial starts automatically)
-context watch . --budget 120000 --model claude --out clipboard
+# Daily driver (14-day free trial starts automatically)
+context watch .
 
-# Inspect priorities + trial status
+# See what would be prioritized
 context status .
 
-# Explicit trial / license status
+# Trial / license status
 context trial
 
-# Experimental agent integration
-context mcp --workspace .
+# Shareable invite
+context invite
 ```
 
-### Key flags
+### What you get
 
-| Flag | Description | Default |
-|------|-------------|---------| 
-| `-b, --budget` | Total token budget | 128000 |
-| `-r, --reserved` | Tokens reserved for your prompt | 4000 |
-| `-m, --model` | `claude` \| `gpt-5` \| `generic` \| `tiktoken` | claude |
-| `-c, --compression` | `structural` \| `compact` \| `full` \| `summary` | structural |
-| `-f, --format` | `xml` \| `json` | xml |
-| `-o, --out` | `stdout` \| `clipboard` \| `<file>` | stdout |
-| `-p, --prompt` | Task description appended to the bundle | — |
-| `--no-git` | Disable git prioritization | — |
+| Feature | Free | Pro (after trial) |
+|---------|------|-------------------|
+| `context pack` | ✓ | ✓ |
+| Browser utility | ✓ | ✓ |
+| Git prioritization | ✓ | ✓ |
+| Structural compression | ✓ | ✓ |
+| Context Score | ✓ | ✓ |
+| `context watch` (live re-pack → clipboard) | 14-day trial | ✓ |
+| Priority support | — | ✓ |
 
-## Free Top-Tier Trial (Watch)
-
-- First time you run `context watch`, a **14-day free Pro trial** starts automatically.
-- Full Watch mode + all current Pro features unlocked.
-- Local only (`~/.config/context/`). No credit card. No upload. No telemetry of your code.
-- One trial per machine (lightweight fingerprint).
-- After 14 days: `context pack` stays free forever. `context watch` requires Pro.
-- Check remaining days anytime: `context trial` or `context status`.
-
-This is deliberately generous so you feel the daily-driver habit before any paywall. Designed for conversion, not unlimited free usage. Zero infrastructure cost.
-
-## How it works
+### How packing works
 
 ```
 Acquire (fast-glob + .gitignore)
-  → Real git status (porcelain) → priority 100 for any change
+  → Real git status → priority 100 for any change
   → Filter binaries & oversized files
-  → Structural compression (keep signatures, elide bodies)
+  → Structural compression (language-aware skeletons)
   → Local token estimate
   → Greedy budget pack (high priority first)
-  → Export clean XML (CDATA + SHA-256) or JSON
+  → Clean XML (CDATA + SHA-256) or JSON
 ```
 
-Everything stays on your machine. No telemetry of file contents.
+No telemetry of file contents. Trial state is a local timestamp only.
 
-## Browser version
+### Browser
 
-The original air-gapped browser utility is still available at  
-https://context.frobbmedia.com (static, zero upload, free forever).
+Air-gapped web utility (still free): [context.frobbmedia.com](https://context.frobbmedia.com)
 
-## Monetization
+### Pricing
 
-| Tier | Price | Includes |
-|------|-------|----------|
-| Core Web + Pack | Free | Full browser utility + one-shot CLI pack |
-| Pro (after 14-day free trial) | $9/mo | Full Watch mode, advanced compression, priority support |
-| Enterprise | $19/user/mo | Air-gapped Docker, secret scanner, seats |
+- **Core** — free forever (pack + browser)
+- **Pro** — $9/mo after the 14-day trial (Watch + priority)
+- **Enterprise** — $19/user/mo (air-gapped Docker, seats, scanner)
 
-Upgrade: https://context.frobbmedia.com/pro
-
-## Development
+### Development
 
 ```bash
 git clone https://github.com/frobbmedia-creator/Context.git
@@ -96,6 +86,4 @@ npm test
 npx context pack . --out /tmp/test.xml
 ```
 
-## License
-
-MIT
+MIT · [Changelog](./CHANGELOG.md)
