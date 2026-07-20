@@ -1,8 +1,10 @@
-# Context v0.2.1
+# Context v0.3.0
 
 **Local-first · Git-aware · LLM-ready context packs**
 
 The killer utility for turning any private workspace into clean, budgeted XML or JSON for Claude, GPT, Gemini, or Ollama — without ever uploading a single file.
+
+**Icon status unlocked:** Free forever one-shot packer + **14-day free top-tier trial** of the full Pro daily-driver (`context watch`).
 
 ## Install
 
@@ -15,14 +17,17 @@ npx @frobb-media/context
 ## Commands
 
 ```bash
-# One-shot pack (clipboard)
+# One-shot pack (always free)
 context pack . --budget 120000 --model claude --out clipboard
 
-# Daily driver — re-packs on every save
+# Daily driver — full Pro features (14-day free top-tier trial starts automatically)
 context watch . --budget 120000 --model claude --out clipboard
 
-# Inspect priorities
+# Inspect priorities + trial status
 context status .
+
+# Explicit trial / license status
+context trial
 
 # Experimental agent integration
 context mcp --workspace .
@@ -40,6 +45,17 @@ context mcp --workspace .
 | `-o, --out` | `stdout` \| `clipboard` \| `<file>` | stdout |
 | `-p, --prompt` | Task description appended to the bundle | — |
 | `--no-git` | Disable git prioritization | — |
+
+## Free Top-Tier Trial (Watch)
+
+- First time you run `context watch`, a **14-day free Pro trial** starts automatically.
+- Full Watch mode + all current Pro features unlocked.
+- Local only (`~/.config/context/`). No credit card. No upload. No telemetry of your code.
+- One trial per machine (lightweight fingerprint).
+- After 14 days: `context pack` stays free forever. `context watch` requires Pro.
+- Check remaining days anytime: `context trial` or `context status`.
+
+This is deliberately generous so you feel the daily-driver habit before any paywall. Designed for conversion, not unlimited free usage. Zero infrastructure cost.
 
 ## How it works
 
@@ -64,9 +80,11 @@ https://context.frobbmedia.com (static, zero upload, free forever).
 
 | Tier | Price | Includes |
 |------|-------|----------|
-| Core Web | Free | Full browser utility |
-| Pro | $9/mo | CLI + watch mode + clipboard sync |
+| Core Web + Pack | Free | Full browser utility + one-shot CLI pack |
+| Pro (after 14-day free trial) | $9/mo | Full Watch mode, advanced compression, priority support |
 | Enterprise | $19/user/mo | Air-gapped Docker, secret scanner, seats |
+
+Upgrade: https://context.frobbmedia.com/pro
 
 ## Development
 
