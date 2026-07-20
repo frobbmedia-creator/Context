@@ -1,24 +1,15 @@
 #!/usr/bin/env node
 /**
- * Context CLI — Local-first Git-aware workspace packer for LLMs
- * v0.2.0  |  The killer daily-driver version
- *
- * Usage:
- *   context pack [dir] --budget 128000 --model claude --out clipboard
- *   context watch [dir] --budget 128000 --model claude
- *   context status [dir]
- *   context mcp   (experimental Model Context Protocol server)
+ * Context CLI v0.3.0 — Icon status (legacy path; prefer bin/context.js)
+ * Free 14-day top-tier Watch trial + conversion engine
  */
-
 import { Command } from 'commander';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { packWorkspace, watchWorkspace, printStatus } from '../../src/cli-core.js';
 import { startMcpServer } from '../../src/mcp-server.js';
+import { checkProAccess, printTrialInfo } from '../../src/trial.js';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const version = '0.2.0';
-
+const version = '0.3.0';
 const program = new Command();
 
 program
@@ -28,7 +19,7 @@ program
 
 program
   .command('pack')
-  .description('Pack a workspace into structured XML or JSON for an LLM')
+  .description('Pack a workspace into structured XML or JSON for an LLM (always free)')
   .argument('[dir]', 'Workspace directory', '.')
   .option('-b, --budget <tokens>', 'Total token budget', '128000')
   .option('-r, --reserved <tokens>', 'Reserved tokens for the user prompt', '4000')
@@ -53,8 +44,7 @@ program
         useGit: opts.git !== false,
         extraIgnore: opts.ignore || []
       });
-
-      await writeOutput(result.content, opts.out, opts.format);
+      await writeOutput(result.content, opts.out);
       if (opts.out !== 'stdout') {
         console.error(`✓ Packed ${result.stats.included} files · ${result.stats.tokens} tokens · ${result.stats.saved} saved`);
       }
@@ -66,7 +56,7 @@ program
 
 program
   .command('watch')
-  .description('Watch workspace and re-pack on changes (the Pro daily-driver)')
+  .description('Watch workspace and re-pack on changes (Pro daily-driver — 14-day free top-tier trial)')
   .argument('[dir]', 'Workspace directory', '.')
   .option('-b, --budget <tokens>', 'Total token budget', '128000')
   .option('-r, --reserved <tokens>', 'Reserved tokens', '4000')
@@ -77,6 +67,10 @@ program
   .option('-p, --prompt <text>', 'User task prompt', '')
   .option('--debounce <ms>', 'Debounce ms after last change', '400')
   .action(async (dir, opts) => {
+    const access = await checkProAccess('watch');
+    if (access.message) console.error(access.message);
+    if (!access.allowed) process.exit(1);
+
     console.error(`Context watch · ${path.resolve(dir)} · budget ${opts.budget} · ${opts.model}`);
     console.error('Re-packing on save →', opts.out);
     await watchWorkspace(path.resolve(dir), {
@@ -93,16 +87,25 @@ program
 
 program
   .command('status')
-  .description('Show git-aware file priorities and estimated tokens without packing')
+  .description('Show git-aware file priorities, estimated tokens, and trial status')
   .argument('[dir]', 'Workspace directory', '.')
   .option('-m, --model <name>', 'Tokenizer profile', 'claude')
   .action(async (dir, opts) => {
+    await printTrialInfo();
+    console.error('');
     await printStatus(path.resolve(dir), { model: opts.model });
   });
 
 program
+  .command('trial')
+  .description('Show Pro trial / license status (free top-tier Watch trial)')
+  .action(async () => {
+    await printTrialInfo();
+  });
+
+program
   .command('mcp')
-  .description('Start experimental MCP server (stdio) for agent integration')
+  .description('Start experimental MCP server (stdio)')
   .option('--workspace <dir>', 'Default workspace root', '.')
   .action(async (opts) => {
     await startMcpServer(path.resolve(opts.workspace));
@@ -110,7 +113,7 @@ program
 
 program.parse();
 
-async function writeOutput(content, target, format) {
+async function writeOutput(content, target) {
   if (target === 'stdout') {
     process.stdout.write(content);
     return;
@@ -121,12 +124,11 @@ async function writeOutput(content, target, format) {
       await clipboardy.default.write(content);
       console.error('✓ Copied to clipboard');
     } catch {
-      console.error('clipboardy not available — install it or use --out file');
+      console.error('clipboardy not available — falling back to stdout');
       process.stdout.write(content);
     }
     return;
   }
-  // treat as filename
   const fs = await import('node:fs/promises');
   await fs.writeFile(target, content, 'utf8');
   console.error(`✓ Wrote ${target}`);
