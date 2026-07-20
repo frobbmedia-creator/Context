@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CONTEXT — Local-First, Git-Aware Workspace Compressor for LLMs</title>
-  <meta name="description" content="Structure, compress, and package local code directories into beautiful, LLM-ready XML/JSON prompt bundles with absolute, air-gapped security. Free browser utility + real CLI with watch mode.">
+  <title>CONTEXT — Local-First Git-Aware Context Engine for LLMs | 14-Day Free Pro Trial</title>
+  <meta name="description" content="The only local-first, git-aware workspace compressor that prioritizes your actual changes. Free browser + CLI. 14-day free top-tier trial of Watch mode. Zero upload.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none';">
   <script defer src="/_vercel/insights/script.js"></script>
   <style>
@@ -23,10 +23,8 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background-color: var(--bg-main); color: var(--text-primary); font-family: var(--font-sans); line-height: 1.6; -webkit-font-smoothing: antialiased; }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-    
     header { border-bottom: 1px solid var(--border-color); padding: 2rem 0; background: rgba(9, 9, 11, 0.5); backdrop-filter: blur(8px); }
     .header-nav { display: flex; justify-content: space-between; align-items: center; }
-    
     .brand { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: var(--text-primary); }
     .brand-logo {
       display: flex; align-items: center; justify-content: center;
@@ -36,100 +34,80 @@
       box-shadow: 0 0 15px var(--teal-glow);
     }
     .brand-name { font-weight: 900; font-size: 2.2rem; letter-spacing: -0.05em; text-transform: uppercase; background: linear-gradient(180deg, #ffffff 30%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    
     .security-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(13, 148, 136, 0.08); border: 1px solid rgba(13, 148, 136, 0.25); padding: 0.5rem 1rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.8rem; color: var(--teal-accent); font-weight: 600; }
-    
-    .hero { padding: 8rem 0 5rem 0; text-align: center; }
-    .hero h1 { font-size: 4.2rem; font-weight: 900; letter-spacing: -0.05em; line-height: 1.05; margin-bottom: 2rem; background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero p { font-size: 1.35rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto 3rem auto; font-weight: 400; }
-    
-    .cta-group { display: flex; justify-content: center; gap: 1.25rem; margin-bottom: 2rem; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 1rem 2rem; border-radius: 8px; font-weight: 700; font-size: 1.05rem; text-decoration: none; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; }
+    .hero { padding: 7rem 0 4rem 0; text-align: center; }
+    .hero h1 { font-size: 3.8rem; font-weight: 900; letter-spacing: -0.05em; line-height: 1.08; margin-bottom: 1.5rem; background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 1.3rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto 2.5rem auto; }
+    .cta-group { display: flex; justify-content: center; gap: 1.25rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 1rem 2rem; border-radius: 8px; font-weight: 700; font-size: 1.05rem; text-decoration: none; transition: all 0.2s; cursor: pointer; }
     .btn-primary { background-color: var(--teal-accent); color: var(--text-primary); border: 1px solid var(--teal-accent); box-shadow: 0 6px 20px var(--teal-glow); }
-    .btn-primary:hover { background-color: #115e59; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4); }
+    .btn-primary:hover { background-color: #115e59; transform: translateY(-2px); }
     .btn-secondary { background-color: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); }
-    .btn-secondary:hover { border-color: var(--teal-accent); color: var(--text-primary); transform: translateY(-2px); }
-    
+    .btn-secondary:hover { border-color: var(--teal-accent); color: var(--text-primary); }
     .cli-install {
-      display: inline-block; margin: 0 auto 3rem; background: var(--bg-panel); border: 1px solid var(--border-color);
+      display: inline-block; margin: 0 auto 2rem; background: var(--bg-panel); border: 1px solid var(--border-color);
       border-radius: 10px; padding: 1rem 1.5rem; font-family: var(--font-mono); font-size: 0.95rem; color: var(--teal-accent);
     }
     .cli-install code { color: var(--text-primary); }
-    
-    .trust-ribbon { display: flex; justify-content: center; gap: 2.5rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 1.25rem 0; margin-bottom: 6rem; text-transform: uppercase; letter-spacing: 0.05em; flex-wrap: wrap; }
-    
-    .app-preview-container { background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 3rem; text-align: center; margin-bottom: 8rem; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-    .app-preview-container::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 50%; height: 2px; background: linear-gradient(90deg, transparent, var(--teal-accent), transparent); }
-    .dropzone-placeholder { border: 2px dashed rgba(13, 148, 136, 0.3); border-radius: 12px; padding: 5rem 2rem; background-color: rgba(9, 9, 11, 0.6); transition: all 0.25s ease; cursor: pointer; }
-    .dropzone-placeholder:hover { border-color: var(--teal-accent); background-color: rgba(13, 148, 136, 0.03); box-shadow: inset 0 0 20px rgba(13, 148, 136, 0.05); }
-    .dropzone-icon { font-size: 3.5rem; margin-bottom: 1.5rem; filter: drop-shadow(0 0 10px var(--teal-glow)); }
-    
-    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-bottom: 8rem; }
-    .feature-card { background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 2.5rem; transition: border-color 0.2s ease; }
-    .feature-card:hover { border-color: rgba(13, 148, 136, 0.4); }
-    .feature-card h3 { font-size: 1.35rem; margin-bottom: 1rem; color: var(--text-primary); font-weight: 800; letter-spacing: -0.02em; }
-    .feature-card p { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
-    
-    .pricing-section { text-align: center; margin-bottom: 8rem; }
-    .pricing-section h2 { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.04em; }
-    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 4rem; text-align: left; }
-    .pricing-card { background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 3rem 2.5rem; display: flex; flex-direction: column; position: relative; }
-    .pricing-card.premium { border-color: var(--teal-accent); box-shadow: 0 10px 30px rgba(13, 148, 136, 0.12); }
-    .pricing-card.premium::after { content: 'CLI LIVE'; position: absolute; top: -12px; right: 24px; background-color: var(--teal-accent); color: var(--text-primary); font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 4px; letter-spacing: 0.05em; }
-    .pricing-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; font-weight: 800; }
-    .price { font-size: 2.4rem; font-weight: 900; margin-bottom: 2rem; color: var(--text-primary); font-family: var(--font-mono); }
-    .price span { font-size: 1rem; font-weight: 400; color: var(--text-secondary); font-family: var(--font-sans); }
-    .pricing-features { list-style-type: none; margin-bottom: 2rem; flex-grow: 1; }
-    .pricing-features li { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 0.75rem; }
-    .pricing-features li::before { content: "✓"; color: var(--teal-accent); font-weight: bold; }
-    
-    .install-box {
-      background: #0c0c0e; border: 1px solid var(--border-color); border-radius: 8px;
-      padding: 0.85rem 1rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--teal-accent);
-      margin-bottom: 1rem; word-break: break-all;
+    .trial-callout {
+      display: inline-block; background: rgba(13, 148, 136, 0.12); border: 1px solid rgba(13, 148, 136, 0.35);
+      color: var(--teal-accent); font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700;
+      padding: 0.6rem 1.2rem; border-radius: 6px; margin-bottom: 2rem;
     }
-    
-    .faq-section { max-width: 900px; margin: 0 auto 10rem auto; }
-    .faq-section h2 { text-align: center; margin-bottom: 4rem; font-size: 2.5rem; font-weight: 900; letter-spacing: -0.04em; }
-    .faq-item { border-bottom: 1px solid var(--border-color); padding: 2rem 0; }
-    .faq-question { font-weight: 700; font-size: 1.25rem; color: var(--text-primary); margin-bottom: 0.75rem; letter-spacing: -0.01em; }
-    .faq-answer { color: var(--text-secondary); font-size: 1rem; line-height: 1.7; }
-    
-    footer { text-align: center; padding: 5rem 0; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.9rem; background-color: rgba(9, 9, 11, 0.4); }
-    
+    .trust-ribbon { display: flex; justify-content: center; gap: 2rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 1.25rem 0; margin-bottom: 5rem; text-transform: uppercase; letter-spacing: 0.05em; flex-wrap: wrap; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 6rem; }
+    .feature-card { background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; }
+    .feature-card h3 { font-size: 1.25rem; margin-bottom: 0.75rem; font-weight: 800; }
+    .feature-card p { color: var(--text-secondary); font-size: 0.95rem; }
+    .pricing-section { text-align: center; margin-bottom: 6rem; }
+    .pricing-section h2 { font-size: 2.4rem; font-weight: 900; letter-spacing: -0.04em; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; text-align: left; }
+    .pricing-card { background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 2.5rem; display: flex; flex-direction: column; position: relative; }
+    .pricing-card.premium { border-color: var(--teal-accent); box-shadow: 0 10px 30px rgba(13, 148, 136, 0.12); }
+    .pricing-card.premium::after { content: '14-DAY FREE TRIAL'; position: absolute; top: -12px; right: 20px; background-color: var(--teal-accent); color: var(--text-primary); font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 4px; }
+    .pricing-card h3 { font-size: 1.4rem; margin-bottom: 0.4rem; font-weight: 800; }
+    .price { font-size: 2.2rem; font-weight: 900; margin-bottom: 1.5rem; font-family: var(--font-mono); }
+    .price span { font-size: 0.95rem; font-weight: 400; color: var(--text-secondary); font-family: var(--font-sans); }
+    .pricing-features { list-style: none; margin-bottom: 1.5rem; flex-grow: 1; }
+    .pricing-features li { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem; display: flex; gap: 0.6rem; }
+    .pricing-features li::before { content: "✓"; color: var(--teal-accent); font-weight: bold; }
+    .install-box { background: #0c0c0e; border: 1px solid var(--border-color); border-radius: 8px; padding: 0.8rem 1rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--teal-accent); margin-bottom: 1rem; }
+    .faq-section { max-width: 900px; margin: 0 auto 8rem; }
+    .faq-section h2 { text-align: center; margin-bottom: 3rem; font-size: 2.3rem; font-weight: 900; }
+    .faq-item { border-bottom: 1px solid var(--border-color); padding: 1.75rem 0; }
+    .faq-question { font-weight: 700; font-size: 1.15rem; margin-bottom: 0.6rem; }
+    .faq-answer { color: var(--text-secondary); }
+    footer { text-align: center; padding: 4rem 0; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.9rem; }
     @media (max-width: 968px) {
-      .hero h1 { font-size: 3rem; }
+      .hero h1 { font-size: 2.6rem; }
       .features-grid, .pricing-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-
   <header>
     <div class="container header-nav">
       <a href="#" class="brand">
         <div class="brand-logo">[C]</div>
         <span class="brand-name">Context</span>
       </a>
-      <div class="security-badge">
-        <span>● CLI Live · Local Processing · v0.2.1</span>
-      </div>
+      <div class="security-badge">● CLI LIVE · 14-DAY FREE TOP-TIER TRIAL · v0.3.0</div>
     </div>
   </header>
 
   <main class="container">
-    
     <section class="hero">
-      <h1>Optimized LLM Workspace Prompts.<br>Strictly 100% Local.</h1>
-      <p>Stop uploading your proprietary codebases to random cloud aggregators. Context auto-analyzes, compresses, and packages directories locally — in the browser or via the real CLI with watch mode.</p>
+      <div class="trial-callout">14-DAY FREE FULL PRO TRIAL OF WATCH MODE</div>
+      <h1>The local context engine<br>that prioritizes your real work.</h1>
+      <p>Git-aware. Structurally compressed. Budgeted. 100% local. Never uploads a single file. Free forever for one-shot packs. Full daily-driver Watch mode unlocked for 14 days the moment you run it.</p>
       
       <div class="cta-group">
         <a href="/app" class="btn btn-primary">Launch Free Web Utility</a>
-        <a href="#cli" class="btn btn-secondary">Get the CLI</a>
+        <a href="#cli" class="btn btn-secondary">Install CLI + Start Trial</a>
       </div>
       
       <div class="cli-install" id="cli">
-        <code>npm install -g @frobb-media/context</code>
+        <code>npm install -g @frobb-media/context && context watch .</code>
       </div>
     </section>
 
@@ -138,117 +116,97 @@
       <span>•</span>
       <span>No file uploads</span>
       <span>•</span>
-      <span>Local browser + CLI</span>
+      <span>Real git prioritization</span>
       <span>•</span>
-      <span>Real git status</span>
+      <span>14-day free Pro trial</span>
+      <span>•</span>
+      <span>Local only</span>
     </div>
-
-    <section class="app-preview-container">
-      <div class="dropzone-placeholder" onclick="window.location.href='/app'">
-        <div class="dropzone-icon">📁</div>
-        <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Drop your project folder directly into the window</h3>
-        <p style="color: var(--text-secondary); font-size: 1rem;">
-          Your directory handles are evaluated locally on your machine. Disconnect your Wi-Fi right now to verify.
-        </p>
-      </div>
-    </section>
 
     <section class="features-grid">
       <div class="feature-card">
-        <h3>Git-Aware Context Budgeting</h3>
-        <p>Real <code>git status --porcelain</code> prioritization. Changed files get full fidelity; surrounding code is compressed. Slash prompt token fees by up to 80% without losing the important context.</p>
+        <h3>Git-Aware Priority</h3>
+        <p>Real <code>git status --porcelain</code>. Changed files get priority 100. Your actual work lands in the context first. Everything else is compressed or dropped under budget.</p>
       </div>
       <div class="feature-card">
-        <h3>Air-Gapped Privacy Core</h3>
-        <p>Hardened Content Security Policies keep file processing local. The CLI never phones home. Your workspace files are never uploaded by the application.</p>
+        <h3>Structural Compression</h3>
+        <p>Keep signatures, types, exports. Elide bodies. Local token estimation matched to Claude / GPT / generic. Cut token waste 50-80% while keeping the signal.</p>
       </div>
       <div class="feature-card">
-        <h3>Structured Layout Templates</h3>
-        <p>Pipes raw files into robust, schema-compliant XML or JSON. SHA-256 integrity hashing, sanitized escapes, and CDATA blocks for absolute model safety.</p>
+        <h3>Watch Mode (the habit)</h3>
+        <p>Re-packs on every save → clipboard. The daily driver that makes every LLM session better. Full Pro features free for 14 days, then $9/mo.</p>
       </div>
     </section>
 
     <section class="pricing-section">
-      <h2>Sane, Host-Direct Pricing</h2>
-      <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 1.1rem;">Because Context runs locally, we don't bleed cash on processing servers. You benefit directly.</p>
+      <h2>Free forever. Full power for 14 days. Then choose.</h2>
+      <p style="color: var(--text-secondary); margin-top: 0.5rem;">No credit card to start the trial. Everything stays on your machine.</p>
       
       <div class="pricing-grid">
         <div class="pricing-card">
-          <h3>Core Web App</h3>
+          <h3>Core (Web + Pack)</h3>
           <div class="price">$0<span> / forever</span></div>
           <ul class="pricing-features">
-            <li>100% Client-Side Web Application</li>
-            <li>Browser File System API Integration</li>
-            <li>Interactive Token Budget Tuning</li>
-            <li>Valid XML and JSON Prompt Construction</li>
-            <li>Global Exclude Rule Management</li>
+            <li>Full browser utility (air-gapped)</li>
+            <li>One-shot CLI <code>context pack</code></li>
+            <li>Git prioritization + structural compression</li>
+            <li>XML / JSON export with hashes</li>
           </ul>
-          <a href="/app" class="btn btn-secondary" style="margin-top: auto; width: 100%;">Open Web Utility</a>
+          <a href="/app" class="btn btn-secondary" style="width:100%">Open Web Utility</a>
         </div>
 
         <div class="pricing-card premium">
           <h3>Pro Developer</h3>
           <div class="price">$9<span> / month</span></div>
           <ul class="pricing-features">
-            <li><strong>CLI is live now:</strong> pack + watch + status</li>
-            <li><strong>Watch mode:</strong> re-pack on every save → clipboard</li>
-            <li><strong>Real git prioritization</strong></li>
-            <li>Unlimited local presets & pipelines</li>
+            <li><strong>14-day free top-tier trial</strong> starts on first <code>context watch</code></li>
+            <li>Full Watch mode (re-pack on save → clipboard)</li>
+            <li>All current Pro features unlocked during trial</li>
+            <li>After trial: keep the habit for $9/mo</li>
           </ul>
           <div class="install-box">npm i -g @frobb-media/context</div>
-          <a href="https://buy.stripe.com/8x2fZgh0M0qG1SI8mQb7y01" class="btn btn-primary" style="width: 100%;">Support Pro · $9/mo</a>
+          <a href="https://buy.stripe.com/8x2fZgh0M0qG1SI8mQb7y01" class="btn btn-primary" style="width:100%">Upgrade after trial · $9/mo</a>
         </div>
 
         <div class="pricing-card">
-          <h3>Secure Enterprise</h3>
+          <h3>Enterprise</h3>
           <div class="price">$19<span> / user / mo</span></div>
           <ul class="pricing-features">
-            <li><strong>Air-Gapped Docker Bundle</strong></li>
-            <li><strong>Autonomous Security Scanner</strong></li>
-            <li>Central Workspace Team Seat Console</li>
-            <li>Dedicated SLA Implementation & Support</li>
+            <li>Air-gapped Docker image</li>
+            <li>Secret scanner</li>
+            <li>Team seats + audit</li>
+            <li>Priority support</li>
           </ul>
-          <a href="https://buy.stripe.com/aFa8wO7qca1g40Q8mQb7y02" class="btn btn-secondary" style="margin-top: auto; width: 100%;">Contact Security Sales</a>
+          <a href="https://buy.stripe.com/aFa8wO7qca1g40Q8mQb7y02" class="btn btn-secondary" style="width:100%; margin-top:auto">Contact Sales</a>
         </div>
       </div>
     </section>
 
-    <section class="faq-section" id="faq">
-      <h2>Technical Deep Dive & FAQ</h2>
-      
+    <section class="faq-section">
+      <h2>FAQ</h2>
       <div class="faq-item">
-        <div class="faq-question">How does Context read my workspace without sending it to a server?</div>
-        <div class="faq-answer">Browser version uses the File System Access API + workers. CLI version reads the filesystem directly. In both cases your code never leaves the machine.</div>
+        <div class="faq-question">How does the 14-day free top-tier trial work?</div>
+        <div class="faq-answer">Run <code>context watch</code> once. A local trial starts automatically (timestamp in <code>~/.config/context/</code>). Full Watch + Pro features for 14 days. One trial per machine. No credit card. After expiry, <code>context pack</code> stays free forever; Watch requires Pro.</div>
       </div>
-
       <div class="faq-item">
-        <div class="faq-question">How does the Git-aware prioritization work?</div>
-        <div class="faq-answer">The CLI runs real <code>git status --porcelain</code> and <code>git ls-files</code>. Any working-tree change gets priority 100. The browser version uses a lighter index + mtime heuristic. Neither writes to your repository.</div>
+        <div class="faq-question">Does anything leave my machine?</div>
+        <div class="faq-answer">No. Browser uses File System Access API. CLI reads the filesystem directly. Zero upload of workspace contents. Trial state is local only.</div>
       </div>
-
       <div class="faq-item">
-        <div class="faq-question">Is the CLI free?</div>
-        <div class="faq-answer">The source is MIT-licensed. You can install and run it today with <code>npm install -g @frobb-media/context</code>. The $9/mo Pro tier supports continued development and unlocks priority features and support.</div>
+        <div class="faq-question">Why is Watch the paid feature?</div>
+        <div class="faq-answer">Because it is the daily driver that creates the habit. One-shot pack is free so anyone can try the quality. Watch turns Context into infrastructure you rely on every day — that is the must-have.</div>
       </div>
-
       <div class="faq-item">
-        <div class="faq-question">What is a Content Security Policy (CSP), and why is yours so strict?</div>
-        <div class="faq-answer">A Content Security Policy is a security firewall enforced by the browser. Context keeps scripts and workers self-hosted, allows same-origin Vercel Analytics requests, and does not upload workspace file contents.</div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">Can the application handle massive repositories?</div>
-        <div class="faq-answer">Yes. Processing is non-blocking (workers in the browser, efficient streaming in the CLI). Ignore rules are applied early. Memory stays under control even on large monorepos.</div>
+        <div class="faq-question">How is this different from Repomix / code2prompt / Cursor context?</div>
+        <div class="faq-answer">Real git prioritization of your actual changes, structural compression that keeps signal while cutting tokens, pure local (no upload), budget control, and a true watch loop that lives in your terminal.</div>
       </div>
     </section>
-
   </main>
 
   <footer>
     <div class="container">
-      <p>&copy; 2026 Frobb Media. Context is open-source (MIT). CLI v0.2.1 is live.</p>
+      <p>&copy; 2026 Frobb Media. Context is open-source (MIT). CLI v0.3.0 · 14-day free top-tier trial live.</p>
     </div>
   </footer>
-
 </body>
 </html>
