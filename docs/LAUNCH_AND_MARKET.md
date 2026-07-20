@@ -1,70 +1,55 @@
-# Context — Launch & Market Playbook (v0.2)
+# Context — Launch & Market Playbook (v0.3.0 Icon Status)
 
 ## Positioning (one sentence)
-The only local-first, Git-aware context packer that turns your private workspace into clean, budgeted XML/JSON for Claude, GPT, Gemini or Ollama — without ever uploading a single file.
+The only local-first, Git-aware context packer that turns your private workspace into clean, budgeted XML/JSON for any LLM — with a 14-day free top-tier trial of the daily-driver Watch mode, zero upload, forever.
 
 ## Core narrative
-- Privacy is the feature, not a checkbox.
+- Privacy is the feature.
 - Token cost is the enemy; structural + git prioritization is the weapon.
-- Free browser utility = trust. CLI watch mode = daily habit = paid conversion.
+- Free browser + free pack = trust. 14-day free full Watch trial = habit formation. Pro = continued daily driver.
+- Designed under the growth model of Ellis / Balfour / Chen / Petit / Bicego / Lancaric.
 
-## Launch sequence (72-hour plan)
+## Free Top-Tier Trial Design (cost-controlled)
+- Duration: 14 days
+- Scope: Full current Pro (Watch + all features)
+- Trigger: First `context watch`
+- Storage: Local only (`~/.config/context/trial.json`)
+- Anti-abuse: Lightweight machine fingerprint
+- Cost: Zero infrastructure (pure local)
+- After expiry: Pack free forever. Watch gated with clear upgrade CTA.
+- Messaging: Celebratory on start, soft urgency in last 3 days, clean hard gate after.
 
-### T-0 (now)
-- [x] Accept all technical recommendations
-- [x] Ship CLI drop-in (this commit)
-- [ ] `npm publish` (or GitHub Packages / binary release)
-- [ ] Update context.frobbmedia.com CTAs and pricing copy to match reality
+This is the fastest path to monetization: let users fall in love with the habit, then convert.
 
-### Day 1 — Soft launch
-- Post private link to 20–30 power users who already used the free web tool
-- Collect feedback on watch mode latency and token accuracy
-- Fix any show-stoppers
+## Launch sequence (executed)
 
-### Day 2 — Public
-1. Show HN title:  
-   “Show HN: Context – local-first Git-aware context packer for LLMs (CLI + browser, zero upload)”
-2. Reddit (same day, staggered):
-   - r/LocalLLaMA
-   - r/ClaudeAI
-   - r/MachineLearning (careful)
-   - r/vscode / r/Cursor
-3. X / Twitter thread:
-   - Hook: “I was tired of pasting 80k tokens of noise into Claude”
-   - Show `context watch` demo (screen recording)
-   - Before/after token counts on a real private repo
-   - “Free in the browser. $9/mo for the CLI that lives in your terminal.”
-4. Update landing page hero with the watch-mode GIF or short video (assets already exist in original promo/)
+### Done
+- [x] Product polish + trial engine
+- [x] README / CHANGELOG / docs updated for icon status
+- [x] Version bumped to 0.3.0
+- [x] Code pushed to main
 
-### Week 1 content
-- “How Context cut my Claude bill 60% on a 12k-file monorepo”
-- “Why I stopped using cloud repo-to-prompt tools”
-- Short demo videos for TikTok / Shorts / Reels (reuse the existing promo frames)
+### Next (human)
+- [ ] `npm publish --access public`
+- [ ] Landing page CTA + trial messaging + demo video
+- [ ] Soft launch to existing users
+- [ ] Show HN + Reddit + X + Product Hunt
 
-## Conversion levers
-1. Free web → install CLI (one-liner on landing page)
-2. First `context watch` session → “this is magic” moment
-3. After 3 days of daily use → Pro upgrade prompt
-4. Enterprise: air-gapped Docker + secret scanner (ship in v0.3)
+## Conversion levers (live)
+1. Free web / pack → install CLI
+2. First `context watch` → automatic 14-day top-tier trial (magic moment)
+3. Daily use during trial → habit
+4. Day 11–14 urgency messaging → paid conversion
+5. Referral (next iteration)
 
-## Metrics to watch
-- Web → CLI install conversion
-- Watch sessions per user
-- Token-saved numbers (surface them in the CLI output)
-- Stripe MRR from the two existing price points
+## Metrics
+- Trial starts
+- Watch sessions per trial user
+- Free → Pro conversion
+- Weekly Active Watchers
+- Token savings surface
 
-## Competitive wedges
-- vs gitingest / repo2prompt / cloud tools → zero upload, real git status, structured XML with hashes
-- vs Cursor / Continue built-in context → works with any model, any editor, fully local, budget control
-- vs pure CLI packers → beautiful browser free tier + watch-to-clipboard loop
+## Competitive wedges (still hold)
+- Zero upload + real git status + structured budgeted output + watch loop + free top-tier trial
 
-## Pricing psychology
-$9 is an impulse buy for any developer who pays for Claude/GPT.  
-Make the value equation: “saves more than $9 in tokens or time in the first week.”
-
-Enterprise at $19/user is cheap enough for small teams and high enough to signal seriousness.
-
-## Final note
-Ship the CLI. Everything else is secondary.  
-The browser MVP already proved people care about the privacy + packing story.  
-The watch mode turns it into a habit. Habits convert.
+Ship. Convert. Become the default local context engine.
