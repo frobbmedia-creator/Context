@@ -1,35 +1,29 @@
-# Publish Checklist — Final
+# Publish Checklist — v0.3.0 Icon Status
 
-Run these commands **on your local machine** (the sandbox has no internet and cannot publish).
+Run on your Mac (networked machine). The Grok terminal / sandbox has no internet and cannot publish.
 
 ```bash
-cd /Users/frobbclaw/Documents/Codex/2026-07-17/u/Context
+cd /path/to/Context   # or git clone https://github.com/frobbmedia-creator/Context.git
 
-# 1. Make sure you have the latest remote changes
 git pull origin main
 
-# 2. Check status — commit anything still local if needed
-git status
-
-# 3. If you still have uncommitted local fixes (ESM, mode bits, etc.):
-#    git add src/cli-core.js cli/bin/context.js package-lock.json
-#    git commit -m "chore: local polish before publish"
-#    git push origin main
-
-# 4. Install & test
 npm install
 npm test
 
-# 5. Publish
+# Confirm version
+node -e "console.log(require('./package.json').version)"   # should be 0.3.0
+
+# Publish (use the scoped name that matches package.json)
 npm publish --access public
 
-# 6. Verify
-npm view @frobbmedia/context version
-# → should print 0.2.1
+# Verify
+npm view @frobb-media/context version
+# → 0.3.0
 ```
 
-After a successful publish the landing page CTA becomes fully live:
+After publish:
+1. Landing page is already updated (trial messaging live via Vercel rewrite to outputs/context).
+2. Soft launch to existing users.
+3. Fire the posts in docs/LAUNCH_POSTS.md (Show HN first).
 
-```
-npm install -g @frobbmedia/context
-```
+Trial is local-only → zero cost to run. Convert aggressively after the 14-day window.
