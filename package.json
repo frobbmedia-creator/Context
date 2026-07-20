@@ -1,7 +1,7 @@
 {
   "name": "@frobb-media/context",
-  "version": "0.2.2",
-  "description": "Local-first, Git-aware workspace compressor for LLM-ready XML/JSON. Browser utility + CLI daemon with watch mode.",
+  "version": "0.3.0",
+  "description": "Local-first, Git-aware workspace compressor for LLM-ready XML/JSON. Free browser + CLI with 14-day free top-tier Watch trial.",
   "type": "module",
   "bin": {
     "context": "bin/context.js"
@@ -44,7 +44,8 @@
     "cli/",
     "src/",
     "README.md",
-    "LICENSE.md"
+    "LICENSE.md",
+    "CHANGELOG.md"
   ],
   "repository": {
     "type": "git",
