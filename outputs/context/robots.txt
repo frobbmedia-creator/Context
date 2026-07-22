@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://context.frobbmedia.com/sitemap.xml
