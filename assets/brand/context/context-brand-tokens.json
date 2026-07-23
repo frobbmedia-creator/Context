@@ -1,0 +1,14 @@
+{
+  "brand": "Context",
+  "logoVersion": "1.0",
+  "colors": {
+    "indigo": "#635BFF",
+    "cyan": "#22D3EE",
+    "charcoal": "#111827",
+    "white": "#FFFFFF"
+  },
+  "preferredLogo": "context-logo-horizontal.png",
+  "preferredSymbol": "context-symbol-master.png",
+  "minimumDigitalSymbolSizePx": 32,
+  "clearSpaceRule": "At least the width of the cyan accent on all sides"
+}
