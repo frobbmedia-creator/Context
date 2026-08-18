@@ -23,7 +23,7 @@
    ```
    Verify: `npm view @frobb-media/context version` → 0.3.0
 
-2. Landing page (context.frobbmedia.com):
+2. Landing page (contextkit.dev):
    - Hero: “14-day free Pro trial of Watch — the daily driver”
    - CTA: `npm install -g @frobb-media/context` then `context watch .`
    - Pricing: Free (pack + browser) → $9/mo Pro after trial

@@ -77,7 +77,7 @@ export async function checkProAccess(feature = 'watch') {
         'Context Pro — 14-day free trial started',
         'Full Watch mode unlocked. No credit card. Nothing leaves your machine.',
         'After 14 days: context pack stays free · Watch requires Pro.',
-        'https://context.frobbmedia.com',
+        'https://contextkit.dev',
         ''
       ].join('\n')
     };
@@ -100,7 +100,7 @@ export async function checkProAccess(feature = 'watch') {
       '',
       'Context Pro trial ended.',
       'context pack remains free forever.',
-      'context watch requires Pro → https://context.frobbmedia.com/pro',
+      'context watch requires Pro → https://contextkit.dev/pro',
       ''
     ].join('\n')
   };
@@ -116,7 +116,7 @@ export async function printTrialInfo() {
   if (trial.status === 'active') {
     console.error(`Status: Pro trial active · ${trial.remainingDays} days left · expires ${trial.expiresAt.slice(0, 10)}`);
   } else if (trial.status === 'expired') {
-    console.error('Status: Pro trial expired · https://context.frobbmedia.com/pro');
+    console.error('Status: Pro trial expired · https://contextkit.dev/pro');
   } else {
     console.error('Status: No trial yet · first `context watch` starts the 14-day free Pro trial');
   }
@@ -136,6 +136,6 @@ export function formatInviteMessage(code) {
     `npm i -g @frobb-media/context && context watch .`,
     ``,
     `Invite: ${code}`,
-    `https://context.frobbmedia.com`
+    `https://contextkit.dev`
   ].join('\n');
 }

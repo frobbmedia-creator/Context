@@ -26,7 +26,7 @@ context watch .
 
 First `watch` starts the 14-day free top-tier trial automatically (local only).
 
-Browser version (also free, air-gapped): https://context.frobbmedia.com
+Browser version (also free, air-gapped): https://contextkit.dev
 
 Would love feedback from people who live in Claude/Cursor/Aider/Ollama daily.
 
@@ -52,7 +52,7 @@ npm i -g @frobb-media/context
 context watch .
 ```
 
-Site + browser utility: https://context.frobbmedia.com
+Site + browser utility: https://contextkit.dev
 
 Happy to answer any questions about the packing strategy or the trial design.
 
@@ -88,7 +88,7 @@ npm install -g @frobb-media/context
 context watch .
 ```
 
-Site: https://context.frobbmedia.com
+Site: https://contextkit.dev
 
 If you live in Claude / Cursor / Ollama, this should feel like the missing local layer.
 

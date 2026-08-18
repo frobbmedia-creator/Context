@@ -31,7 +31,7 @@ shots = [
     ("shot2", "Context is a compile step.", "Budgeted slices. Schema boundaries. No vibes."),
     ("shot3", "Local silicon. Typed handoffs.", "Hermes · OpenClaw · Ollama on bare metal."),
     ("shot4", "consensus_threshold: 0.70", "Fail closed. Drop. Mutate. Retry."),
-    ("shot5", "CONTEXT ENGINE", "context.frobbmedia.com  ·  Local. Typed. Thresholded."),
+    ("shot5", "CONTEXT ENGINE", "contextkit.dev  ·  Local. Typed. Thresholded."),
 ]
 
 
@@ -57,7 +57,7 @@ for s in shots:
 open_img = Image.new("RGBA", (W, H), (9, 9, 11, 255))
 d = ImageDraw.Draw(open_img)
 t = "CONTEXT ENGINE"
-s = "context.frobbmedia.com"
+s = "contextkit.dev"
 tb = d.textbbox((0, 0), t, font=hero_font)
 sb = d.textbbox((0, 0), s, font=hero_sub)
 tw, th = tb[2] - tb[0], tb[3] - tb[1]

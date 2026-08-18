@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://context.frobbmedia.com/sitemap.xml
+Sitemap: https://contextkit.dev/sitemap.xml
