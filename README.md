@@ -1,7 +1,7 @@
 # Context
 
 [![CI](https://github.com/frobbmedia-creator/Context/actions/workflows/ci.yml/badge.svg)](https://github.com/frobbmedia-creator/Context/actions/workflows/ci.yml)
-[![Live](https://img.shields.io/badge/live-context.frobbmedia.com-10b981)](https://context.frobbmedia.com)
+[![Live](https://img.shields.io/badge/live-contextkit.dev-10b981)](https://contextkit.dev)
 [![npm](https://img.shields.io/npm/v/@frobb-media/context.svg)](https://www.npmjs.com/package/@frobb-media/context)
 
 **Local-first, git-aware context packs for LLMs.**
@@ -72,7 +72,7 @@ No telemetry of file contents. Trial state is a local timestamp only.
 
 ### Browser
 
-Air-gapped web utility (still free): [context.frobbmedia.com](https://context.frobbmedia.com)
+Air-gapped web utility (still free): [contextkit.dev](https://contextkit.dev)
 
 ### Pricing
 
