@@ -61,6 +61,6 @@ export function formatShareableScore(scoreObj, root = '.') {
     `Workspace: ${root}`,
     `Tokens used: ${scoreObj.tokens}  |  Saved: ${scoreObj.saved} (${scoreObj.savingsPct}%)`,
     `High-priority hit rate: ${scoreObj.priorityHit}%`,
-    `Built with https://context.frobbmedia.com  (local-first, zero upload)`
+    `Built with https://contextkit.dev  (local-first, zero upload)`
   ].join('\n');
 }

@@ -7,12 +7,12 @@
 
 | # | Dur | Visual | On-screen title | Subtitle |
 |---|-----|--------|-----------------|----------|
-| 0 | 1.5s | Cold open black + [C] monogram | CONTEXT ENGINE | context.frobbmedia.com |
+| 0 | 1.5s | Cold open black + [C] monogram | CONTEXT ENGINE | contextkit.dev |
 | 1 | 6s | Warped holographic prompt slab / token rain | 128k is not memory. | Prompt-stuffing is a DoS against your own agents. |
 | 2 | 6s | Vertical glass pipeline nodes, teal flow | Context is a compile step. | Budgeted slices. Schema boundaries. No vibes. |
 | 3 | 6s | Bare-metal workstation + flash array | Local silicon. Typed handoffs. | Hermes · OpenClaw · Ollama on bare metal. |
 | 4 | 6s | Consensus gate — pass/fail particles | consensus_threshold: 0.70 | Fail closed. Drop. Mutate. Retry. |
-| 5 | 6s | [C] glass end card | CONTEXT ENGINE | context.frobbmedia.com · Local. Typed. Thresholded. |
+| 5 | 6s | [C] glass end card | CONTEXT ENGINE | contextkit.dev · Local. Typed. Thresholded. |
 
 ## Optional VO (engineer register)
 
@@ -28,7 +28,7 @@
       Fail closed. Drop. Mutate. Retry.
 0:26  Context Engine.
       Local. Typed. Thresholded.
-      context.frobbmedia.com
+      contextkit.dev
 ```
 
 ## Rebuild
